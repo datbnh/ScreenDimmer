@@ -69,6 +69,7 @@ namespace Augustine.ScreenDimmer
             notifyIcon1.Icon = IconMediumBright;
             
             Icon = IconMediumBright32x32;
+
             Text = string.Format("Screen Dimmer {0}", Assembly.GetExecutingAssembly().GetName().Version.ToString());
         }
         

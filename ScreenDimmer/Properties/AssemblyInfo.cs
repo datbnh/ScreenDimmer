@@ -14,7 +14,7 @@ Screen Dimmer allows you to set the brightness level easily and quickly by using
 Plus, if you works with multiple screens, Screen Dimmer gives you the capablity of dimming the one that you want, with hotkeys! This can be handy when you are giving presentation and want to mute the secondary screen without any access in hand.
 
 Home page and documentation: <N/A> at the moment
-Source code (GPL): <N/A> at the moment
+Source code (GPL): https://github.com/datbnh/ScreenDimmer
 ")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Augustine's Software")]
@@ -41,5 +41,5 @@ Source code (GPL): <N/A> at the moment
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("3.0.0.0")]
+[assembly: AssemblyVersion("3.1.*")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
