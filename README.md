@@ -11,6 +11,7 @@ Screen Dimmer allows you to set the brightness level easily and quickly by using
 Plus, if you works with multiple screens, Screen Dimmer gives you the capablity of dimming the one that you want, with hotkeys! This can be handy when you are giving presentation and want to mute the secondary screen without any access in hand.
 
 Home page and documentation: <N/A> at the moment
+
 Source code (GPL): https://github.com/datbnh/ScreenDimmer/
 
 ## Main Features
