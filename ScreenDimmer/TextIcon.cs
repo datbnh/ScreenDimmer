@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,11 +15,18 @@ namespace Augustine.ScreenDimmer
     {
         public static Icon CreateTextIcon(string str, Color color, string fontName = "", int size = 16)
         {
+            float dpiXsf = 1;
+            float dpiYsf = 1;
+            using (Graphics graphics = Graphics.FromHwnd(IntPtr.Zero))
+            {
+                dpiXsf = graphics.DpiX / 96;
+                dpiYsf = graphics.DpiY / 96;
+            }
             Font fontToUse = fontName == "" ?
             new Font("Segoe UI Symbol", (float)size, FontStyle.Regular, GraphicsUnit.Pixel) :
-            new Font(fontName, (float)size, FontStyle.Regular, GraphicsUnit.Pixel);
+            new Font(fontName, (float)(size*dpiXsf), FontStyle.Regular, GraphicsUnit.Pixel);
             Brush brushToUse = new SolidBrush(color);
-            Bitmap bitmapText = new Bitmap(size, size);
+            Bitmap bitmapText = new Bitmap((int)(size * dpiXsf), (int)(size * dpiYsf));
             Graphics g = System.Drawing.Graphics.FromImage(bitmapText);
 
             IntPtr hIcon;

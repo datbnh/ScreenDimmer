@@ -19,9 +19,9 @@ namespace Augustine.ScreenDimmer
         private AboutBox1 aboutBox;
         private HelpWindow helpWindow;
 
-        private readonly int HEIGHT = 158;
-        private readonly int WIDTH_EXPANDED = 405;
-        private readonly int WIDTH_COLLAPSED = 190;
+        //private readonly int HEIGHT = 158;
+        //private readonly int WIDTH_EXPANDED = 405;
+        //private readonly int WIDTH_COLLAPSED = 190;
 
         /// <summary>
         /// configuration
@@ -250,7 +250,8 @@ namespace Augustine.ScreenDimmer
 
         private void expand()
         {
-            this.Size = new Size(WIDTH_EXPANDED, HEIGHT);
+            //this.Size = new Size(WIDTH_EXPANDED, HEIGHT);
+            tableLayoutPanel3.Visible = true;
             labelExpandCollapse.Text = "◁";
             toolTipHint.SetToolTip(labelExpandCollapse, "Less");
             isExpanded = true;
@@ -258,7 +259,8 @@ namespace Augustine.ScreenDimmer
 
         private void collapse()
         {
-            this.Size = new Size(WIDTH_COLLAPSED, HEIGHT);
+            //this.Size = new Size(WIDTH_COLLAPSED, HEIGHT);
+            tableLayoutPanel3.Visible = false;
             labelExpandCollapse.Text = "▷";
             toolTipHint.SetToolTip(labelExpandCollapse, "More...");
             isExpanded = false;
@@ -283,8 +285,6 @@ namespace Augustine.ScreenDimmer
             overlayWindow.TopMost = true;
             // bring the main form to top of the overlay window.
             TopMost = true;
-            //overlayWindow.Validate();
-            //Validate();
         }
 
         /// <summary>
