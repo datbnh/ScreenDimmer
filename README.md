@@ -5,6 +5,9 @@ Copyleft (ↄ) Augustine's Software 2015 - 2017
 
 Augustine's Software
 
+### Download latest version
+https://github.com/datbnh/ScreenDimmer/releases/latest
+
 ## Description
 As the minimum brightness of a monitor is sometimes still too bright for you to work at night, the original purpose of Screen Dimmer was to simply render a black layer on top of it to even lower the brightness of your screen.
 
