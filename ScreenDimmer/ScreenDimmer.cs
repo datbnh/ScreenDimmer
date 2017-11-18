@@ -15,46 +15,73 @@ namespace Augustine.ScreenDimmer
 {
     internal partial class ScreenDimmer : Form
     {
+        #region private properties
+        /// <summary>
+        /// Configuration file path.
+        /// </summary>
+        private readonly string confFile = "ScreenDimmer.conf";
+
+        // child forms
+        /// <summary>
+        /// The overlay window.
+        /// </summary>
         private Form overlayWindow;
+        /// <summary>
+        /// The about box.
+        /// </summary>
         private AboutBox1 aboutBox;
+        /// <summary>
+        /// The help window ("show hotkeys" window).
+        /// </summary>
         private HelpWindow helpWindow;
 
-        //private readonly int HEIGHT = 158;
-        //private readonly int WIDTH_EXPANDED = 405;
-        //private readonly int WIDTH_COLLAPSED = 190;
-
         /// <summary>
-        /// configuration
+        /// Contains all the settings.
         /// </summary>
         private Configuration configuration;
 
         /// <summary>
-        /// State of main window.
-        /// </summary>
-        private bool isExpanded;
-        /// <summary>
-        /// Increase if a registered hotkey is pressed repeatedly. Use for governing brightness increase/decrease speed.
+        /// Used for governing brightness increasing/decreasing speed.
         /// </summary>
         private int hotkeyRepeatCount;
         /// <summary>
-        /// Flag to check if a hotkey is repeatedly pressed.
+        /// State variable to check if a hotkey is repeatedly pressed.
         /// </summary>
         private int lastHotkeyId = -1;
-
+        /// <summary>
+        /// Flag to check if closing to tray or exitting application.
+        /// </summary>
         private bool isContextClose = false;
-
+        /// <summary>
+        /// State variable to decide to refresh the screen list or not.
+        /// </summary>
         private int numberOfScreens = -1;
         
+        // transition effect
+        /// <summary>
+        /// The total change in brightness track bar value.
+        /// </summary>
         private int fadeDistance;
+        /// <summary>
+        /// The brightness track bar value when enabling the transition timer.
+        /// </summary>
         private int fadeOrigin;
+        /// <summary>
+        /// The current time when enabling the transition timer.
+        /// </summary>
         private DateTime fadeStartTime;
+        #endregion
         
-        //private readonly Icon iconFullBright = TextIcon.CreateTextIcon("\uE284");
-        //private readonly Icon iconZeroBright = TextIcon.CreateTextIcon("\uE285");
+        #region static members
+        /// <summary>
+        /// Icon to use in system tray.
+        /// </summary>
         public static readonly Icon IconMediumBright = TextIcon.CreateTextIcon("\uE286", Color.White);
+        /// <summary>
+        /// Main icon.
+        /// </summary>
         public static readonly Icon IconMediumBright32x32 = TextIcon.CreateTextIcon("\uE286", Color.White, "", 32);
-
-        private readonly string confFile = "ScreenDimmer.conf";
+        #endregion
 
         public ScreenDimmer()
         {
@@ -64,21 +91,19 @@ namespace Augustine.ScreenDimmer
             aboutBox = new AboutBox1();
             helpWindow = new HelpWindow();
             configuration = new Configuration();
-            
+
+            // has to be in this order!
             populateScreenList();
-            collapse();
             loadConfiguration();
             hookKeys();
 
             notifyIcon1.Icon = IconMediumBright;
-            
             Icon = IconMediumBright32x32;
-
             Text = string.Format("Screen Dimmer {0}", Assembly.GetExecutingAssembly().GetName().Version.ToString());
         }
         
         /// <summary>
-        /// Initializes the overlay window.
+        /// Initializes the overlay window (no border, click-through, see-through, invisible to Alt+Tab).
         /// </summary>
         private void initOverlayWindow()
         {
@@ -103,10 +128,10 @@ namespace Augustine.ScreenDimmer
             //    (int)LayeredWindowAttributeFlags.LWA_ALPHA);
         }
 
-        #region hotkeys
+        #region hotkey management
         /// <summary>
-        /// (!) Has to be called after loading configuration.
         /// Tries to register all the global hotkeys.
+        /// (!) Has to be called after loading configuration (when the hotkeys are defined).
         /// </summary>
         private void hookKeys()
         {
@@ -124,6 +149,9 @@ namespace Augustine.ScreenDimmer
             }
         }
 
+        /// <summary>
+        /// Pupulates the hotkeys on to the help window.
+        /// </summary>
         private void populateHotkeys()
         {
             helpWindow.ResetHotkeyPanel();
@@ -136,7 +164,7 @@ namespace Augustine.ScreenDimmer
         }
 
         /// <summary>
-        /// Tries to register a hotkey and handle the exception if happens.
+        /// Tries to register one hotkey and handle the error message if there are any.
         /// </summary>
         /// <param name="hotkey"></param>
         /// <param name="sb"></param>
@@ -156,7 +184,7 @@ namespace Augustine.ScreenDimmer
         }
 
         /// <summary>
-        /// WndProc message listener
+        /// WndProc message listener.
         /// </summary>
         /// <param name="m"></param>
         protected override void WndProc(ref Message m)
@@ -190,7 +218,7 @@ namespace Augustine.ScreenDimmer
                     }
                     else if (hotkeyId == configuration.HotKeyBright.Id)
                     {
-                        bright();
+                        brighten();
                     }
                     else if (hotkeyId == configuration.HotKeyForceOnTop.Id)
                     {
@@ -207,6 +235,7 @@ namespace Augustine.ScreenDimmer
         }
         #endregion
 
+        #region color management
         /// <summary>
         /// Gets and updates the color from the color picker tool.
         /// </summary>
@@ -231,101 +260,26 @@ namespace Augustine.ScreenDimmer
             overlayWindow.BackColor = color;
         }
 
+        /// <summary>
+        /// Gets the current color of the overlay window.
+        /// </summary>
+        /// <returns></returns>
         private Color getDimColor() {
             return overlayWindow.BackColor;
         }
-
-
-        private void labelExpandCollapse_Click(object sender, EventArgs e)
-        {
-            if (isExpanded)
-            {
-                collapse();
-            }
-            else
-            {
-                expand();
-            }
-        }
-
-        private void expand()
-        {
-            //this.Size = new Size(WIDTH_EXPANDED, HEIGHT);
-            tableLayoutPanel3.Visible = true;
-            labelExpandCollapse.Text = "◁";
-            toolTipHint.SetToolTip(labelExpandCollapse, "Less");
-            isExpanded = true;
-        }
-
-        private void collapse()
-        {
-            //this.Size = new Size(WIDTH_COLLAPSED, HEIGHT);
-            tableLayoutPanel3.Visible = false;
-            labelExpandCollapse.Text = "▷";
-            toolTipHint.SetToolTip(labelExpandCollapse, "More...");
-            isExpanded = false;
-        }
-
-        private void checkBoxAllowTransition_CheckedChanged(object sender, EventArgs e)
-        {
-            // do nothing. Configuration will be synced with UI via uiToConfig.
-        }
-
-        #region enforcing on top
-        private void timerEnforceOnTop_Tick(object sender, EventArgs e)
-        {
-            enforceOnTop();
-        }
-
-        /// <summary>
-        /// Enforce the program to the top most.
-        /// </summary>
-        private void enforceOnTop()
-        {
-            overlayWindow.TopMost = true;
-            // bring the main form to top of the overlay window.
-            TopMost = true;
-        }
-
-        /// <summary>
-        /// Update the interval of enforcing-on-top timer.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
-        {
-            timerEnforceOnTop.Interval = (int)(((NumericUpDown)sender).Value * 1000);
-        }
-
-        /// <summary>
-        /// Start/stop enforcing-on-top timer.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void checkBoxEnforceOnTop_CheckedChanged(object sender, EventArgs e)
-        {
-            bool isEnabled = ((CheckBox)sender).Checked;
-            numericUpDown1.Enabled = isEnabled;
-            label1.Enabled = isEnabled;
-            if (isEnabled)
-            {
-                timerEnforceOnTop.Start();
-            }
-            else
-            {
-                timerEnforceOnTop.Stop();
-            }
-        }
         #endregion
 
-        #region brightness control
+        #region brightness management
         private void checkBoxZeroBrightness_CheckedChanged(object sender, EventArgs e)
         {
             setTrackBarBrightnessMinimum(checkBoxZeroBrightness.Checked ? 0 : 20);
         }
     
         /// <summary>
-        /// Set the minimum for the brightness track bar.
+        /// Sets the minimum for the brightness track bar.
+        /// If the current track bar value is smaller than the desired value, 
+        /// it will be set to the desired value as well.
+        /// Note that the case that the desired value is larger than maximum value is not handled here!
         /// </summary>
         /// <param name="minimum"></param>
         private void setTrackBarBrightnessMinimum(int minimum)
@@ -338,7 +292,7 @@ namespace Augustine.ScreenDimmer
         }
 
         /// <summary>
-        /// Update the ovelay opacity level according to current trackbar value.
+        /// Updates the ovelay opacity level according to current brightness track bar value.
         /// </summary>
         /// <param name="brightness"></param>
         private void setBrightness(int brightness)
@@ -349,11 +303,12 @@ namespace Augustine.ScreenDimmer
         }
 
         /// <summary>
-        /// Increase brightness track bar value.
+        /// Increases brightness track bar value.
         /// </summary>
         private void increseBrightness(int speed)
         {
-            if (trackBarBrightness.Value == trackBarBrightness.Maximum) {
+            if (trackBarBrightness.Value == trackBarBrightness.Maximum)
+            {
                 return;
             }
             
@@ -367,7 +322,7 @@ namespace Augustine.ScreenDimmer
         }
 
         /// <summary>
-        /// Decrease brightness track bar value.
+        /// Decreases brightness track bar value.
         /// </summary>
         private void decreaseBrightness(int speed)
         {
@@ -387,59 +342,104 @@ namespace Augustine.ScreenDimmer
             }
         }
 
+        /// <summary>
+        /// Dims the screen to minimum brightness.
+        /// </summary>
+        private void dim()
+        {
+            if (checkBoxAllowTransition.Checked)
+            {
+                fade(trackBarBrightness.Minimum);
+            }
+            else
+            {
+                trackBarBrightness.Value = trackBarBrightness.Minimum;
+            }
+        }
+
+        /// <summary>
+        /// Brightens the sceen to maximum brightness.
+        /// </summary>
+        private void brighten()
+        {
+            if (checkBoxAllowTransition.Checked)
+            {
+                fade(trackBarBrightness.Maximum);
+            }
+            else
+            {
+                trackBarBrightness.Value = trackBarBrightness.Maximum;
+            }
+        }
+
+        /// <summary>
+        /// Initializes state variables for transition effect.
+        /// </summary>
+        /// <param name="target"></param>
+        private void fade(int target)
+        {
+
+            fadeDistance = target - trackBarBrightness.Value;
+            if (fadeDistance == 0)
+            {
+                return;
+            }
+            fadeOrigin = trackBarBrightness.Value;
+            timerFade.Enabled = true;
+            fadeStartTime = DateTime.Now;
+        }
+
+        /// <summary>
+        /// Interpolates brightness in real time to ensure the transition happens in the period defined in configuration.FadeDuration.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void timerFade_Tick(object sender, EventArgs e)
+        {
+            TimeSpan currentTime = DateTime.Now - fadeStartTime;
+            double target1 = (currentTime.TotalMilliseconds * fadeDistance / configuration.FadeDuration);
+            int target = (int)(fadeOrigin + target1);
+            if ((target >= trackBarBrightness.Maximum) && (fadeDistance > 0))
+            {
+                trackBarBrightness.Value = trackBarBrightness.Maximum;
+                timerFade.Enabled = false;
+            }
+            else if ((target <= trackBarBrightness.Minimum) && (fadeDistance < 0))
+            {
+                trackBarBrightness.Value = trackBarBrightness.Minimum;
+                timerFade.Enabled = false;
+            }
+            else
+            {
+                trackBarBrightness.Value = target;
+            }
+            //Console.WriteLine("{0} Current {1} | Different {3} | Target {2}:{5}| Total Distance {4}",
+            //    currentTime.TotalMilliseconds, 0, target, target1, fadeDistance, 0 + target1);
+        }
+
+        private void buttonDim_Click(object sender, EventArgs e)
+        {
+            dim();
+        }
+
+        private void buttonBright_Click(object sender, EventArgs e)
+        {
+            brighten();
+        }
+
         private void trackBarBrightness_ValueChanged(object sender, EventArgs e)
         {
             setBrightness(((TrackBar)sender).Value);
         }
         #endregion
-
-        private void labelAbout_Click(object sender, EventArgs e)
-        {
-            aboutBox.TopMost = true;
-            aboutBox.ShowDialog();
-        }
-
-        private void labelHelp_Click(object sender, EventArgs e)
-        {
-            populateHotkeys();
-            helpWindow.TopMost = true;
-            helpWindow.ShowDialog();
-        }
-
-        private void labelBug_Click(object sender, System.EventArgs e)
-        {
-            //TODO
-        }
-
-        private void screenDimmer_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            saveConfiguration();
-            if (e.CloseReason == CloseReason.WindowsShutDown)
-            {
-                return;
-            }
-            if (!isContextClose)
-            {
-                this.Hide();
-                e.Cancel = true;
-            }
-        }
-
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            isContextClose = true;
-            notifyIcon1.Dispose();
-            //overlayWindow.Close(); // not necessary, all children will be closed when main form closed.
-            //helpWindow.Close();
-            Close();
-        }
-
-        private void controlPanelToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.Show();
-        }
-
+   
         #region screen management
+        /// <summary>
+        /// Sets the size and position of the form to cover the desired screen.
+        /// Does nothing if the desired screen index is invalid.
+        /// </summary>
+        /// <param name="form"></param>
+        /// <param name="screenIndex"></param>
         private void setScreen(Form form, int screenIndex)
         {
             if (Screen.AllScreens.Length - 1 < screenIndex)
@@ -455,6 +455,9 @@ namespace Augustine.ScreenDimmer
             form.WindowState = currentState;
         }
 
+        /// <summary>
+        /// Pupulates the sceen list into the combo box.
+        /// </summary>
         private void populateScreenList()
         {
             Screen[] screens = Screen.AllScreens;
@@ -507,7 +510,7 @@ namespace Augustine.ScreenDimmer
             {
                 configuration = Configuration.LoadFromFile(confFile);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 configuration.LoadDefault();
             }
@@ -571,37 +574,87 @@ namespace Augustine.ScreenDimmer
         }
         #endregion
 
-        private void buttonDim_Click(object sender, EventArgs e)
+        #region other UI callbacks
+        private void labelExpandCollapse_Click(object sender, EventArgs e)
         {
-            dim();
+            toggleAdvancedSettings();
         }
 
-        private void buttonBright_Click(object sender, EventArgs e)
+        private void toggleAdvancedSettings()
         {
-            bright();
-        }
-
-        private void dim() {
-            if (checkBoxAllowTransition.Checked)
+            tableLayoutPanel3.Visible = !tableLayoutPanel3.Visible;
+            if (tableLayoutPanel3.Visible)
             {
-                fade(trackBarBrightness.Minimum);
+                labelExpandCollapse.Text = "◁";
+                toolTipHint.SetToolTip(labelExpandCollapse, "Less");
             }
             else
             {
-                trackBarBrightness.Value = trackBarBrightness.Minimum;
+                labelExpandCollapse.Text = "▷";
+                toolTipHint.SetToolTip(labelExpandCollapse, "More...");
             }
         }
 
-        private void bright()
+        private void timerEnforceOnTop_Tick(object sender, EventArgs e)
         {
-            if (checkBoxAllowTransition.Checked)
+            enforceOnTop();
+        }
+
+        /// <summary>
+        /// Forces the application to top most.
+        /// </summary>
+        private void enforceOnTop()
+        {
+            overlayWindow.TopMost = true; // overlay window is set to top most
+            TopMost = true; // main form has to be on top of overlay window
+        }
+
+        /// <summary>
+        /// Updates the interval of enforcing-on-top timer.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+            timerEnforceOnTop.Interval = (int)(((NumericUpDown)sender).Value * 1000);
+        }
+
+        /// <summary>
+        /// Starts/stops enforcing-on-top timer.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void checkBoxEnforceOnTop_CheckedChanged(object sender, EventArgs e)
+        {
+            bool isEnabled = ((CheckBox)sender).Checked;
+            numericUpDown1.Enabled = isEnabled;
+            label1.Enabled = isEnabled;
+            if (isEnabled)
             {
-                fade(trackBarBrightness.Maximum);
+                timerEnforceOnTop.Start();
             }
             else
             {
-                trackBarBrightness.Value = trackBarBrightness.Maximum;
+                timerEnforceOnTop.Stop();
             }
+        }
+
+        private void labelAbout_Click(object sender, EventArgs e)
+        {
+            aboutBox.TopMost = true;
+            aboutBox.ShowDialog();
+        }
+
+        private void labelHelp_Click(object sender, EventArgs e)
+        {
+            populateHotkeys();
+            helpWindow.TopMost = true;
+            helpWindow.ShowDialog();
+        }
+
+        private void labelBug_Click(object sender, System.EventArgs e)
+        {
+            //TODO
         }
 
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -609,41 +662,31 @@ namespace Augustine.ScreenDimmer
             Show();
         }
 
-        private void fade(int target)
+        private void controlPanelToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
-            fadeDistance = target - trackBarBrightness.Value;
-            if (fadeDistance == 0)
+            this.Show();
+        }
+
+        private void screenDimmer_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            saveConfiguration();
+            if (e.CloseReason == CloseReason.WindowsShutDown)
             {
                 return;
             }
-            fadeOrigin = trackBarBrightness.Value;
-            timerFade.Enabled = true;
-            fadeStartTime = DateTime.Now;
+            if (!isContextClose)
+            {
+                this.Hide();
+                e.Cancel = true;
+            }
         }
 
-        private void timerFade_Tick(object sender, EventArgs e)
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TimeSpan currentTime = DateTime.Now - fadeStartTime;
-            double target1 = (currentTime.TotalMilliseconds * fadeDistance / configuration.FadeDuration);
-            int target = (int)(fadeOrigin + target1);
-            if ((target >= trackBarBrightness.Maximum) && (fadeDistance > 0)) {
-                trackBarBrightness.Value = trackBarBrightness.Maximum;
-                timerFade.Enabled = false;
-            }
-            else if ((target <= trackBarBrightness.Minimum) && (fadeDistance < 0))
-            {
-                trackBarBrightness.Value = trackBarBrightness.Minimum;
-                timerFade.Enabled = false;
-            }
-            else
-            {
-                trackBarBrightness.Value = target;
-            }
-            //Console.WriteLine("{0} Current {1} | Different {3} | Target {2}:{5}| Total Distance {4}",
-            //    currentTime.TotalMilliseconds, 0, target, target1, fadeDistance, 0 + target1);
+            isContextClose = true;
+            notifyIcon1.Dispose();
+            Close();
         }
-
-
+        #endregion
     }
 }

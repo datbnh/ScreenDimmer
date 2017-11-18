@@ -102,12 +102,12 @@
             this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.colorToolStripMenuItem});
             this.contextMenuStrip2.Name = "contextMenuStrip2";
-            this.contextMenuStrip2.Size = new System.Drawing.Size(124, 28);
+            this.contextMenuStrip2.Size = new System.Drawing.Size(113, 26);
             // 
             // colorToolStripMenuItem
             // 
             this.colorToolStripMenuItem.Name = "colorToolStripMenuItem";
-            this.colorToolStripMenuItem.Size = new System.Drawing.Size(123, 24);
+            this.colorToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.colorToolStripMenuItem.Text = "Color...";
             this.colorToolStripMenuItem.Click += new System.EventHandler(this.colorToolStripMenuItem_Click);
             // 
@@ -117,7 +117,7 @@
             this.labelScreen.Dock = System.Windows.Forms.DockStyle.Fill;
             this.labelScreen.Location = new System.Drawing.Point(3, 32);
             this.labelScreen.Name = "labelScreen";
-            this.labelScreen.Size = new System.Drawing.Size(29, 33);
+            this.labelScreen.Size = new System.Drawing.Size(22, 27);
             this.labelScreen.TabIndex = 44;
             this.labelScreen.Text = "📺";
             this.labelScreen.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -130,7 +130,7 @@
             this.labelBrightness.Font = new System.Drawing.Font("Segoe UI Symbol", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelBrightness.Location = new System.Drawing.Point(3, 0);
             this.labelBrightness.Name = "labelBrightness";
-            this.labelBrightness.Size = new System.Drawing.Size(29, 32);
+            this.labelBrightness.Size = new System.Drawing.Size(22, 32);
             this.labelBrightness.TabIndex = 1;
             this.labelBrightness.Text = "";
             this.labelBrightness.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -141,10 +141,10 @@
             this.labelExpandCollapse.AutoSize = true;
             this.labelExpandCollapse.Cursor = System.Windows.Forms.Cursors.Hand;
             this.labelExpandCollapse.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelExpandCollapse.Location = new System.Drawing.Point(160, 108);
+            this.labelExpandCollapse.Location = new System.Drawing.Point(166, 102);
             this.labelExpandCollapse.Margin = new System.Windows.Forms.Padding(0);
             this.labelExpandCollapse.Name = "labelExpandCollapse";
-            this.labelExpandCollapse.Size = new System.Drawing.Size(28, 25);
+            this.labelExpandCollapse.Size = new System.Drawing.Size(22, 20);
             this.labelExpandCollapse.TabIndex = 54;
             this.labelExpandCollapse.Text = "▷";
             this.toolTipHint.SetToolTip(this.labelExpandCollapse, "More...");
@@ -155,10 +155,10 @@
             this.labelHelp.AutoSize = true;
             this.labelHelp.Cursor = System.Windows.Forms.Cursors.Hand;
             this.labelHelp.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelHelp.Location = new System.Drawing.Point(129, 108);
+            this.labelHelp.Location = new System.Drawing.Point(142, 102);
             this.labelHelp.Margin = new System.Windows.Forms.Padding(0);
             this.labelHelp.Name = "labelHelp";
-            this.labelHelp.Size = new System.Drawing.Size(31, 25);
+            this.labelHelp.Size = new System.Drawing.Size(24, 20);
             this.labelHelp.TabIndex = 55;
             this.labelHelp.Text = "❔";
             this.toolTipHint.SetToolTip(this.labelHelp, "Hotkeys...");
@@ -170,10 +170,10 @@
             this.labelBug.Cursor = System.Windows.Forms.Cursors.Hand;
             this.labelBug.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelBug.ForeColor = System.Drawing.Color.Maroon;
-            this.labelBug.Location = new System.Drawing.Point(184, 119);
+            this.labelBug.Location = new System.Drawing.Point(155, 97);
             this.labelBug.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
             this.labelBug.Name = "labelBug";
-            this.labelBug.Size = new System.Drawing.Size(31, 25);
+            this.labelBug.Size = new System.Drawing.Size(24, 20);
             this.labelBug.TabIndex = 56;
             this.labelBug.Text = "🐞";
             this.toolTipHint.SetToolTip(this.labelBug, "View...");
@@ -185,10 +185,10 @@
             this.labelAbout.AutoSize = true;
             this.labelAbout.Cursor = System.Windows.Forms.Cursors.Hand;
             this.labelAbout.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelAbout.Location = new System.Drawing.Point(0, 108);
+            this.labelAbout.Location = new System.Drawing.Point(0, 102);
             this.labelAbout.Margin = new System.Windows.Forms.Padding(0);
             this.labelAbout.Name = "labelAbout";
-            this.labelAbout.Size = new System.Drawing.Size(28, 25);
+            this.labelAbout.Size = new System.Drawing.Size(22, 20);
             this.labelAbout.TabIndex = 42;
             this.labelAbout.Text = "ⓘ";
             this.labelAbout.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -219,7 +219,7 @@
             this.tableLayoutPanel3.SetColumnSpan(this.checkBoxZeroBrightness, 2);
             this.checkBoxZeroBrightness.Location = new System.Drawing.Point(3, 3);
             this.checkBoxZeroBrightness.Name = "checkBoxZeroBrightness";
-            this.checkBoxZeroBrightness.Size = new System.Drawing.Size(164, 23);
+            this.checkBoxZeroBrightness.Size = new System.Drawing.Size(139, 17);
             this.checkBoxZeroBrightness.TabIndex = 47;
             this.checkBoxZeroBrightness.Text = "Allow Zero Brightness";
             this.toolTipWarning.SetToolTip(this.checkBoxZeroBrightness, "When setting brightness to zero, the screen will be completely dimmed with select" +
@@ -234,9 +234,9 @@
             this.comboBoxScreens.Dock = System.Windows.Forms.DockStyle.Top;
             this.comboBoxScreens.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxScreens.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.comboBoxScreens.Location = new System.Drawing.Point(38, 35);
+            this.comboBoxScreens.Location = new System.Drawing.Point(31, 35);
             this.comboBoxScreens.Name = "comboBoxScreens";
-            this.comboBoxScreens.Size = new System.Drawing.Size(147, 27);
+            this.comboBoxScreens.Size = new System.Drawing.Size(154, 21);
             this.comboBoxScreens.TabIndex = 43;
             this.comboBoxScreens.DropDown += new System.EventHandler(this.comboBoxScreens_DropDown);
             this.comboBoxScreens.SelectedIndexChanged += new System.EventHandler(this.comboBoxScreens_SelectedIndexChanged);
@@ -244,10 +244,10 @@
             // checkBoxDebug
             // 
             this.checkBoxDebug.AutoSize = true;
-            this.checkBoxDebug.Location = new System.Drawing.Point(3, 122);
+            this.checkBoxDebug.Location = new System.Drawing.Point(3, 100);
             this.checkBoxDebug.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.checkBoxDebug.Name = "checkBoxDebug";
-            this.checkBoxDebug.Size = new System.Drawing.Size(127, 23);
+            this.checkBoxDebug.Size = new System.Drawing.Size(107, 17);
             this.checkBoxDebug.TabIndex = 41;
             this.checkBoxDebug.Text = "Log Debug Info";
             this.checkBoxDebug.UseVisualStyleBackColor = true;
@@ -271,24 +271,24 @@
             this.toolStripSeparator1,
             this.exitToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(168, 58);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(147, 54);
             // 
             // controlPanelToolStripMenuItem
             // 
             this.controlPanelToolStripMenuItem.Name = "controlPanelToolStripMenuItem";
-            this.controlPanelToolStripMenuItem.Size = new System.Drawing.Size(167, 24);
+            this.controlPanelToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.controlPanelToolStripMenuItem.Text = "Control Panel";
             this.controlPanelToolStripMenuItem.Click += new System.EventHandler(this.controlPanelToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(164, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(143, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(167, 24);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -308,11 +308,11 @@
             this.tableLayoutPanel1.SetColumnSpan(this.trackBarBrightness, 3);
             this.trackBarBrightness.Dock = System.Windows.Forms.DockStyle.Top;
             this.trackBarBrightness.LargeChange = 20;
-            this.trackBarBrightness.Location = new System.Drawing.Point(38, 3);
+            this.trackBarBrightness.Location = new System.Drawing.Point(31, 3);
             this.trackBarBrightness.Maximum = 100;
             this.trackBarBrightness.Minimum = 20;
             this.trackBarBrightness.Name = "trackBarBrightness";
-            this.trackBarBrightness.Size = new System.Drawing.Size(147, 26);
+            this.trackBarBrightness.Size = new System.Drawing.Size(154, 26);
             this.trackBarBrightness.SmallChange = 10;
             this.trackBarBrightness.TabIndex = 30;
             this.trackBarBrightness.TickFrequency = 10;
@@ -322,9 +322,9 @@
             // checkBoxEnforceOnTop
             // 
             this.checkBoxEnforceOnTop.AutoSize = true;
-            this.checkBoxEnforceOnTop.Location = new System.Drawing.Point(3, 32);
+            this.checkBoxEnforceOnTop.Location = new System.Drawing.Point(3, 26);
             this.checkBoxEnforceOnTop.Name = "checkBoxEnforceOnTop";
-            this.checkBoxEnforceOnTop.Size = new System.Drawing.Size(178, 23);
+            this.checkBoxEnforceOnTop.Size = new System.Drawing.Size(149, 17);
             this.checkBoxEnforceOnTop.TabIndex = 49;
             this.checkBoxEnforceOnTop.Text = "Force on Top of Taskbar";
             this.checkBoxEnforceOnTop.UseVisualStyleBackColor = true;
@@ -335,10 +335,10 @@
             this.label1.AutoSize = true;
             this.label1.Dock = System.Windows.Forms.DockStyle.Right;
             this.label1.Enabled = false;
-            this.label1.Location = new System.Drawing.Point(8, 58);
+            this.label1.Location = new System.Drawing.Point(5, 46);
             this.label1.Margin = new System.Windows.Forms.Padding(3, 0, 3, 6);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(173, 26);
+            this.label1.Size = new System.Drawing.Size(147, 22);
             this.label1.TabIndex = 51;
             this.label1.Text = "Enforcing Period [seconds]:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -352,7 +352,7 @@
             // 
             this.numericUpDown1.AutoSize = true;
             this.numericUpDown1.Enabled = false;
-            this.numericUpDown1.Location = new System.Drawing.Point(187, 61);
+            this.numericUpDown1.Location = new System.Drawing.Point(158, 49);
             this.numericUpDown1.Maximum = new decimal(new int[] {
             1800,
             0,
@@ -364,7 +364,7 @@
             0,
             0});
             this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(61, 26);
+            this.numericUpDown1.Size = new System.Drawing.Size(47, 22);
             this.numericUpDown1.TabIndex = 53;
             this.numericUpDown1.Value = new decimal(new int[] {
             30,
@@ -384,13 +384,12 @@
             // 
             this.checkBoxAllowTransition.AutoSize = true;
             this.tableLayoutPanel3.SetColumnSpan(this.checkBoxAllowTransition, 2);
-            this.checkBoxAllowTransition.Location = new System.Drawing.Point(3, 93);
+            this.checkBoxAllowTransition.Location = new System.Drawing.Point(3, 77);
             this.checkBoxAllowTransition.Name = "checkBoxAllowTransition";
-            this.checkBoxAllowTransition.Size = new System.Drawing.Size(135, 23);
+            this.checkBoxAllowTransition.Size = new System.Drawing.Size(115, 17);
             this.checkBoxAllowTransition.TabIndex = 57;
             this.checkBoxAllowTransition.Text = "Enable Transition";
             this.checkBoxAllowTransition.UseVisualStyleBackColor = true;
-            this.checkBoxAllowTransition.CheckedChanged += new System.EventHandler(this.checkBoxAllowTransition_CheckedChanged);
             // 
             // tableLayoutPanel1
             // 
@@ -416,7 +415,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(188, 133);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(188, 122);
             this.tableLayoutPanel1.TabIndex = 58;
             // 
             // tableLayoutPanel2
@@ -429,7 +428,7 @@
             this.tableLayoutPanel2.Controls.Add(this.buttonDim, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.buttonBright, 1, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 68);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 62);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -459,8 +458,9 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(251, 148);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(208, 120);
             this.tableLayoutPanel3.TabIndex = 59;
+            this.tableLayoutPanel3.Visible = false;
             // 
             // tableLayoutPanel4
             // 
@@ -476,12 +476,12 @@
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(451, 154);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(408, 128);
             this.tableLayoutPanel4.TabIndex = 60;
             // 
             // ScreenDimmer
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
