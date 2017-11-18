@@ -141,10 +141,11 @@
             // 
             this.labelExpandCollapse.AutoSize = true;
             this.labelExpandCollapse.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.labelExpandCollapse.Location = new System.Drawing.Point(156, 103);
+            this.labelExpandCollapse.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelExpandCollapse.Location = new System.Drawing.Point(150, 100);
             this.labelExpandCollapse.Margin = new System.Windows.Forms.Padding(0);
             this.labelExpandCollapse.Name = "labelExpandCollapse";
-            this.labelExpandCollapse.Size = new System.Drawing.Size(16, 13);
+            this.labelExpandCollapse.Size = new System.Drawing.Size(22, 20);
             this.labelExpandCollapse.TabIndex = 54;
             this.labelExpandCollapse.Text = "▷";
             this.toolTipHint.SetToolTip(this.labelExpandCollapse, "More...");
@@ -154,10 +155,11 @@
             // 
             this.labelHelp.AutoSize = true;
             this.labelHelp.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.labelHelp.Location = new System.Drawing.Point(138, 103);
+            this.labelHelp.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelHelp.Location = new System.Drawing.Point(126, 100);
             this.labelHelp.Margin = new System.Windows.Forms.Padding(0);
             this.labelHelp.Name = "labelHelp";
-            this.labelHelp.Size = new System.Drawing.Size(18, 13);
+            this.labelHelp.Size = new System.Drawing.Size(24, 20);
             this.labelHelp.TabIndex = 55;
             this.labelHelp.Text = "❔";
             this.toolTipHint.SetToolTip(this.labelHelp, "Hotkeys...");
@@ -167,11 +169,12 @@
             // 
             this.labelBug.AutoSize = true;
             this.labelBug.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.labelBug.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelBug.ForeColor = System.Drawing.Color.Maroon;
-            this.labelBug.Location = new System.Drawing.Point(304, 103);
+            this.labelBug.Location = new System.Drawing.Point(304, 98);
             this.labelBug.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
             this.labelBug.Name = "labelBug";
-            this.labelBug.Size = new System.Drawing.Size(18, 13);
+            this.labelBug.Size = new System.Drawing.Size(24, 20);
             this.labelBug.TabIndex = 56;
             this.labelBug.Text = "🐞";
             this.toolTipHint.SetToolTip(this.labelBug, "View...");
@@ -182,10 +185,11 @@
             // 
             this.labelAbout.AutoSize = true;
             this.labelAbout.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.labelAbout.Location = new System.Drawing.Point(9, 103);
+            this.labelAbout.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelAbout.Location = new System.Drawing.Point(8, 100);
             this.labelAbout.Margin = new System.Windows.Forms.Padding(0);
             this.labelAbout.Name = "labelAbout";
-            this.labelAbout.Size = new System.Drawing.Size(16, 13);
+            this.labelAbout.Size = new System.Drawing.Size(22, 20);
             this.labelAbout.TabIndex = 42;
             this.labelAbout.Text = "ⓘ";
             this.labelAbout.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
