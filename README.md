@@ -10,9 +10,9 @@ As the minimum brightness of a monitor is sometimes still too bright for you to 
 
 Screen Dimmer allows you to set the brightness level easily and quickly by using hotkeys. You can also change the color of the overlay layer (e.g. to yellow) to use Screen Dimmer as a blue-light filter to protect your precious eyes.
 
-Plus, if you works with multiple screens, Screen Dimmer gives you the capablity of dimming the one that you want, with hotkeys! This can be handy when you are giving presentation and want to mute the secondary screen without any access in hand.
+Plus, if you works with multiple screens, Screen Dimmer gives you the capablity of dimming the one that you want, with hotkeys! This can be handy when you are giving presentation and want to mute the secondary screen without any accesses in hand.
 
-Home page and documentation: <N/A> at the moment
+Home page and documentation: https://github.com/datbnh/ScreenDimmer/
 
 Source code (GPL): https://github.com/datbnh/ScreenDimmer/
 
