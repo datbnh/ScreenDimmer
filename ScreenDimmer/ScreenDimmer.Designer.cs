@@ -56,6 +56,7 @@
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.toolTipWarning = new System.Windows.Forms.ToolTip(this.components);
+            this.checkBoxAllowTransition = new System.Windows.Forms.CheckBox();
             this.contextMenuStrip2.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarBrightness)).BeginInit();
@@ -171,7 +172,7 @@
             this.labelBug.Cursor = System.Windows.Forms.Cursors.Hand;
             this.labelBug.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelBug.ForeColor = System.Drawing.Color.Maroon;
-            this.labelBug.Location = new System.Drawing.Point(304, 98);
+            this.labelBug.Location = new System.Drawing.Point(304, 100);
             this.labelBug.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
             this.labelBug.Name = "labelBug";
             this.labelBug.Size = new System.Drawing.Size(24, 20);
@@ -224,7 +225,7 @@
             // checkBoxDebug
             // 
             this.checkBoxDebug.AutoSize = true;
-            this.checkBoxDebug.Location = new System.Drawing.Point(197, 102);
+            this.checkBoxDebug.Location = new System.Drawing.Point(197, 104);
             this.checkBoxDebug.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.checkBoxDebug.Name = "checkBoxDebug";
             this.checkBoxDebug.Size = new System.Drawing.Size(107, 17);
@@ -278,7 +279,8 @@
             // 
             // timerFade
             // 
-            this.timerFade.Interval = 1;
+            this.timerFade.Interval = 40;
+            this.timerFade.Tick += new System.EventHandler(this.timerFade_Tick);
             // 
             // trackBarBrightness
             // 
@@ -352,12 +354,24 @@
             this.toolTipWarning.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Warning;
             this.toolTipWarning.ToolTipTitle = "Caution";
             // 
+            // checkBoxAllowTransition
+            // 
+            this.checkBoxAllowTransition.AutoSize = true;
+            this.checkBoxAllowTransition.Location = new System.Drawing.Point(197, 74);
+            this.checkBoxAllowTransition.Name = "checkBoxAllowTransition";
+            this.checkBoxAllowTransition.Size = new System.Drawing.Size(115, 17);
+            this.checkBoxAllowTransition.TabIndex = 57;
+            this.checkBoxAllowTransition.Text = "Enable Transition";
+            this.checkBoxAllowTransition.UseVisualStyleBackColor = true;
+            this.checkBoxAllowTransition.CheckedChanged += new System.EventHandler(this.checkBoxAllowTransition_CheckedChanged);
+            // 
             // ScreenDimmer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(399, 129);
+            this.Controls.Add(this.checkBoxAllowTransition);
             this.Controls.Add(this.labelBug);
             this.Controls.Add(this.labelHelp);
             this.Controls.Add(this.comboBoxScreens);
@@ -416,6 +430,7 @@
         private System.Windows.Forms.Label labelHelp;
         private System.Windows.Forms.ToolTip toolTipWarning;
         private System.Windows.Forms.Label labelBug;
+        private System.Windows.Forms.CheckBox checkBoxAllowTransition;
     }
 }
 

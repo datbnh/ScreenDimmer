@@ -45,6 +45,10 @@ namespace Augustine.ScreenDimmer
 
         private int numberOfScreens = -1;
         
+        private int fadeDistance;
+        private int fadeOrigin;
+        private DateTime fadeStartTime;
+        
         //private readonly Icon iconFullBright = TextIcon.CreateTextIcon("\uE284");
         //private readonly Icon iconZeroBright = TextIcon.CreateTextIcon("\uE285");
         public static readonly Icon IconMediumBright = TextIcon.CreateTextIcon("\uE286", Color.White);
@@ -182,11 +186,11 @@ namespace Augustine.ScreenDimmer
                     }
                     else if (hotkeyId == configuration.HotKeyDim.Id)
                     {
-                        trackBarBrightness.Value = trackBarBrightness.Minimum;
+                        dim();
                     }
                     else if (hotkeyId == configuration.HotKeyBright.Id)
                     {
-                        trackBarBrightness.Value = trackBarBrightness.Maximum;
+                        bright();
                     }
                     else if (hotkeyId == configuration.HotKeyForceOnTop.Id)
                     {
@@ -260,10 +264,9 @@ namespace Augustine.ScreenDimmer
             isExpanded = false;
         }
 
-
-        private void toggleDebug(bool state)
+        private void checkBoxAllowTransition_CheckedChanged(object sender, EventArgs e)
         {
-            // TODO
+            // do nothing. Configuration will be synced with UI via uiToConfig.
         }
 
         #region enforcing on top
@@ -282,14 +285,6 @@ namespace Augustine.ScreenDimmer
             TopMost = true;
             //overlayWindow.Validate();
             //Validate();
-        }
-
-        private void toggleEnforceOnTop(bool desiredState)
-        {
-            if (checkBoxEnforceOnTop.Checked == desiredState)
-            {
-                return;
-            }
         }
 
         /// <summary>
@@ -328,16 +323,7 @@ namespace Augustine.ScreenDimmer
         {
             setTrackBarBrightnessMinimum(checkBoxZeroBrightness.Checked ? 0 : 20);
         }
-
-        private void toggleZeroBrighness(bool desiredState)
-        {
-            if (checkBoxZeroBrightness.Checked == desiredState)
-            {
-                return;
-            }
-            checkBoxZeroBrightness.Checked = desiredState;
-        }
-        
+    
         /// <summary>
         /// Set the minimum for the brightness track bar.
         /// </summary>
@@ -535,7 +521,7 @@ namespace Augustine.ScreenDimmer
             configuration.EnforcingPeriod = (int) numericUpDown1.Value;
             configuration.IsDebug = checkBoxDebug.Checked;
             configuration.IsEnforceOnTop = checkBoxEnforceOnTop.Checked;
-            // configuration.IsTransition = checkBoxTransition.Checked; //TODO
+            configuration.IsTransition = checkBoxAllowTransition.Checked;
             configuration.IsZeroBrightness = checkBoxZeroBrightness.Checked;
             configuration.MonitorIndex = (byte) comboBoxScreens.SelectedIndex;
         }
@@ -578,25 +564,86 @@ namespace Augustine.ScreenDimmer
             }
 
             setDimColor(configuration.DimColor);
-            toggleEnforceOnTop(configuration.IsEnforceOnTop);
-            toggleZeroBrighness(configuration.IsZeroBrightness);
-            toggleDebug(configuration.IsDebug);
+            checkBoxEnforceOnTop.Checked = configuration.IsEnforceOnTop;
+            checkBoxZeroBrightness.Checked = configuration.IsZeroBrightness;
+            checkBoxDebug.Checked = configuration.IsDebug;
+            checkBoxAllowTransition.Checked = configuration.IsTransition;
         }
         #endregion
 
         private void buttonDim_Click(object sender, EventArgs e)
         {
-            trackBarBrightness.Value = trackBarBrightness.Minimum;
+            dim();
         }
 
         private void buttonBright_Click(object sender, EventArgs e)
         {
-            trackBarBrightness.Value = trackBarBrightness.Maximum;
+            bright();
+        }
+
+        private void dim() {
+            if (checkBoxAllowTransition.Checked)
+            {
+                fade(trackBarBrightness.Minimum);
+            }
+            else
+            {
+                trackBarBrightness.Value = trackBarBrightness.Minimum;
+            }
+        }
+
+        private void bright()
+        {
+            if (checkBoxAllowTransition.Checked)
+            {
+                fade(trackBarBrightness.Maximum);
+            }
+            else
+            {
+                trackBarBrightness.Value = trackBarBrightness.Maximum;
+            }
         }
 
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             Show();
         }
+
+        private void fade(int target)
+        {
+            
+            fadeDistance = target - trackBarBrightness.Value;
+            if (fadeDistance == 0)
+            {
+                return;
+            }
+            fadeOrigin = trackBarBrightness.Value;
+            timerFade.Enabled = true;
+            fadeStartTime = DateTime.Now;
+        }
+
+        private void timerFade_Tick(object sender, EventArgs e)
+        {
+            TimeSpan currentTime = DateTime.Now - fadeStartTime;
+            double target1 = (currentTime.TotalMilliseconds * fadeDistance / configuration.FadeDuration);
+            int target = (int)(fadeOrigin + target1);
+            if ((target >= trackBarBrightness.Maximum) && (fadeDistance > 0)) {
+                trackBarBrightness.Value = trackBarBrightness.Maximum;
+                timerFade.Enabled = false;
+            }
+            else if ((target <= trackBarBrightness.Minimum) && (fadeDistance < 0))
+            {
+                trackBarBrightness.Value = trackBarBrightness.Minimum;
+                timerFade.Enabled = false;
+            }
+            else
+            {
+                trackBarBrightness.Value = target;
+            }
+            //Console.WriteLine("{0} Current {1} | Different {3} | Target {2}:{5}| Total Distance {4}",
+            //    currentTime.TotalMilliseconds, 0, target, target1, fadeDistance, 0 + target1);
+        }
+
+
     }
 }

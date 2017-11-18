@@ -30,6 +30,8 @@ namespace Augustine.ScreenDimmer
         internal readonly byte MinimumNonZeroBrightness = 20;
         [DataMember(Name = "EnforcingPeriod")]
         internal int EnforcingPeriod;
+        [DataMember(Name = "TransitionDuration")]
+        internal double FadeDuration;
         [DataMember(Name = "Color")]
         internal Color DimColor = Color.Black;
 
@@ -98,6 +100,7 @@ namespace Augustine.ScreenDimmer
             IsDebug = false;
             IsTransition = true;
             EnforcingPeriod = 30;
+            FadeDuration = 250;
             HotKeyDim.SetKey(KeyModifiers.MOD_WIN | KeyModifiers.MOD_CONTROL, System.Windows.Forms.Keys.Left);
             HotKeyBright.SetKey(KeyModifiers.MOD_WIN | KeyModifiers.MOD_CONTROL, System.Windows.Forms.Keys.Right);
             HotKeyDecreaseBrightness.SetKey(KeyModifiers.MOD_WIN | KeyModifiers.MOD_CONTROL, System.Windows.Forms.Keys.Down);
@@ -118,6 +121,13 @@ namespace Augustine.ScreenDimmer
             {
                 throw new Exception("Cannot parse configuration from file.", ex);
             }
+            deserialized.setHotkeyDescriptions();
+            // For the purpose of robustness. Non-positive fade duration will cause trouble.
+            if (deserialized.FadeDuration < 1)
+            {
+                deserialized.FadeDuration = 250;
+            }
+            return deserialized;
             //this.CurrentBrightness = deserialized.CurrentBrightness;
             //this.DimColor = deserialized.DimColor;
             //this.EnforcingPeriod = deserialized.EnforcingPeriod;
@@ -133,8 +143,6 @@ namespace Augustine.ScreenDimmer
             //this.HotKeyForceOnTop = deserialized.HotKeyForceOnTop;
             //this.HotKeyHalt = deserialized.HotKeyHalt;
             //this.HotKeyIncreaseBrightness = deserialized.HotKeyIncreaseBrightness;
-            deserialized.setHotkeyDescriptions();
-            return deserialized;
         }
 
         internal void SaveToFile(string fileName)
@@ -148,5 +156,6 @@ namespace Augustine.ScreenDimmer
                 throw new Exception("Cannot save current configuration to file.", ex);
             }
         }
+
     }
 }
