@@ -81,8 +81,9 @@
             this.buttonDim.Size = new System.Drawing.Size(77, 26);
             this.buttonDim.TabIndex = 46;
             this.buttonDim.Text = "Dim ";
-            this.toolTipHint.SetToolTip(this.buttonDim, "[Enter]\r\nRight click to change color.");
+            this.toolTipHint.SetToolTip(this.buttonDim, "Apply minimum brightness.\r\nRight click to change color.");
             this.buttonDim.UseVisualStyleBackColor = false;
+            this.buttonDim.Click += new System.EventHandler(this.buttonDim_Click);
             // 
             // contextMenuStrip2
             // 
@@ -110,8 +111,9 @@
             this.buttonBright.Size = new System.Drawing.Size(77, 26);
             this.buttonBright.TabIndex = 45;
             this.buttonBright.Text = "Bright ";
-            this.toolTipHint.SetToolTip(this.buttonBright, "[ESC]");
+            this.toolTipHint.SetToolTip(this.buttonBright, "Apply maximum brightness.");
             this.buttonBright.UseVisualStyleBackColor = true;
+            this.buttonBright.Click += new System.EventHandler(this.buttonBright_Click);
             // 
             // labelScreen
             // 

@@ -182,11 +182,11 @@ namespace Augustine.ScreenDimmer
                     }
                     else if (hotkeyId == configuration.HotKeyDim.Id)
                     {
-                        setBrightness(0);
+                        setBrightness(trackBarBrightness.Maximum);
                     }
                     else if (hotkeyId == configuration.HotKeyBright.Id)
                     {
-                        setBrightness(100);
+                        setBrightness(trackBarBrightness.Maximum);
                     }
                     else if (hotkeyId == configuration.HotKeyForceOnTop.Id)
                     {
@@ -583,5 +583,15 @@ namespace Augustine.ScreenDimmer
             toggleDebug(configuration.IsDebug);
         }
         #endregion
+
+        private void buttonDim_Click(object sender, EventArgs e)
+        {
+            setBrightness(trackBarBrightness.Minimum);
+        }
+
+        private void buttonBright_Click(object sender, EventArgs e)
+        {
+            setBrightness(trackBarBrightness.Maximum);
+        }
     }
 }
