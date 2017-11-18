@@ -41,11 +41,11 @@ namespace Augustine.ScreenDimmer
             set { HotKeyDim = GlobalHotkeyParser.Parse(value); } }
         internal GlobalHotKey HotKeyDim;
         
-        [DataMember(Name = "HotkeyBright")]
+        [DataMember(Name = "HotkeyBrighten")]
         private string hotKeyBright {
-            get { return HotKeyBright.ToString(); }
-            set { HotKeyBright = GlobalHotkeyParser.Parse(value); } }
-        internal GlobalHotKey HotKeyBright;
+            get { return HotKeyBrighten.ToString(); }
+            set { HotKeyBrighten = GlobalHotkeyParser.Parse(value); } }
+        internal GlobalHotKey HotKeyBrighten;
 
         [DataMember(Name = "HotkeyDecreaseBrightness")]
         private string hotKeyDecreaseBrightness {
@@ -74,7 +74,7 @@ namespace Augustine.ScreenDimmer
         internal Configuration()
         {
             HotKeyDim = new GlobalHotKey();
-            HotKeyBright = new GlobalHotKey();
+            HotKeyBrighten = new GlobalHotKey();
             HotKeyIncreaseBrightness = new GlobalHotKey();
             HotKeyDecreaseBrightness = new GlobalHotKey();
             HotKeyForceOnTop = new GlobalHotKey();
@@ -84,7 +84,7 @@ namespace Augustine.ScreenDimmer
         private void setHotkeyDescriptions()
         {
             HotKeyDim.SetDescription("Dim (minimum brightness)");
-            HotKeyBright.SetDescription("Bright (maximum brightness)");
+            HotKeyBrighten.SetDescription("Brighten (maximum brightness)");
             HotKeyIncreaseBrightness.SetDescription("Increase Brightness");
             HotKeyDecreaseBrightness.SetDescription("Decrease Brightness");
             HotKeyForceOnTop.SetDescription("Force on Top");
@@ -102,7 +102,7 @@ namespace Augustine.ScreenDimmer
             EnforcingPeriod = 30;
             FadeDuration = 250;
             HotKeyDim.SetKey(KeyModifiers.MOD_WIN | KeyModifiers.MOD_CONTROL, System.Windows.Forms.Keys.Left);
-            HotKeyBright.SetKey(KeyModifiers.MOD_WIN | KeyModifiers.MOD_CONTROL, System.Windows.Forms.Keys.Right);
+            HotKeyBrighten.SetKey(KeyModifiers.MOD_WIN | KeyModifiers.MOD_CONTROL, System.Windows.Forms.Keys.Right);
             HotKeyDecreaseBrightness.SetKey(KeyModifiers.MOD_WIN | KeyModifiers.MOD_CONTROL, System.Windows.Forms.Keys.Down);
             HotKeyIncreaseBrightness.SetKey(KeyModifiers.MOD_WIN | KeyModifiers.MOD_CONTROL, System.Windows.Forms.Keys.Up);
             HotKeyForceOnTop.SetKey(KeyModifiers.MOD_WIN | KeyModifiers.MOD_CONTROL, System.Windows.Forms.Keys.T);

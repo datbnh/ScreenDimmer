@@ -208,7 +208,7 @@
             this.buttonBright.Name = "buttonBright";
             this.buttonBright.Size = new System.Drawing.Size(85, 31);
             this.buttonBright.TabIndex = 45;
-            this.buttonBright.Text = "Bright ";
+            this.buttonBright.Text = "Brighten ";
             this.toolTipHint.SetToolTip(this.buttonBright, "Apply maximum brightness.");
             this.buttonBright.UseVisualStyleBackColor = true;
             this.buttonBright.Click += new System.EventHandler(this.buttonBright_Click);

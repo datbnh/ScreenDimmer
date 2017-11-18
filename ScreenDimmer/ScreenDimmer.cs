@@ -139,7 +139,7 @@ namespace Augustine.ScreenDimmer
             bool success = true;
             success &= tryHookKeyAppendError(configuration.HotKeyIncreaseBrightness, ref sb);
             success &= tryHookKeyAppendError(configuration.HotKeyDecreaseBrightness, ref sb);
-            success &= tryHookKeyAppendError(configuration.HotKeyBright, ref sb);
+            success &= tryHookKeyAppendError(configuration.HotKeyBrighten, ref sb);
             success &= tryHookKeyAppendError(configuration.HotKeyDim, ref sb);
             success &= tryHookKeyAppendError(configuration.HotKeyForceOnTop, ref sb);
             success &= tryHookKeyAppendError(configuration.HotKeyHalt, ref sb);
@@ -156,7 +156,7 @@ namespace Augustine.ScreenDimmer
         {
             helpWindow.ResetHotkeyPanel();
             helpWindow.AddHotKey(configuration.HotKeyDim);
-            helpWindow.AddHotKey(configuration.HotKeyBright);
+            helpWindow.AddHotKey(configuration.HotKeyBrighten);
             helpWindow.AddHotKey(configuration.HotKeyIncreaseBrightness);
             helpWindow.AddHotKey(configuration.HotKeyDecreaseBrightness);
             helpWindow.AddHotKey(configuration.HotKeyForceOnTop);
@@ -216,7 +216,7 @@ namespace Augustine.ScreenDimmer
                     {
                         dim();
                     }
-                    else if (hotkeyId == configuration.HotKeyBright.Id)
+                    else if (hotkeyId == configuration.HotKeyBrighten.Id)
                     {
                         brighten();
                     }
