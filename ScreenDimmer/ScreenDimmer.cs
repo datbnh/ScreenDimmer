@@ -593,5 +593,10 @@ namespace Augustine.ScreenDimmer
         {
             setBrightness(trackBarBrightness.Maximum);
         }
+
+        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            Show();
+        }
     }
 }
