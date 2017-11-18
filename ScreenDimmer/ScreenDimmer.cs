@@ -24,13 +24,14 @@ namespace Augustine.ScreenDimmer
         private readonly int WIDTH_COLLAPSED = 190;
 
         /// <summary>
-        /// State of main window.
-        /// </summary>
-        private bool isExpanded;
-        /// <summary>
         /// configuration
         /// </summary>
         private Configuration configuration;
+
+        /// <summary>
+        /// State of main window.
+        /// </summary>
+        private bool isExpanded;
         /// <summary>
         /// Increase if a registered hotkey is pressed repeatedly. Use for governing brightness increase/decrease speed.
         /// </summary>
@@ -45,39 +46,35 @@ namespace Augustine.ScreenDimmer
         private int numberOfScreens = -1;
         
         //private readonly Icon iconFullBright = TextIcon.CreateTextIcon("\uE284");
-        public static readonly Icon IconMediumBright = TextIcon.CreateTextIcon("\uE286", Color.White);
         //private readonly Icon iconZeroBright = TextIcon.CreateTextIcon("\uE285");
+        public static readonly Icon IconMediumBright = TextIcon.CreateTextIcon("\uE286", Color.White);
         public static readonly Icon IconMediumBright32x32 = TextIcon.CreateTextIcon("\uE286", Color.White, "", 32);
 
+        private readonly string confFile = "ScreenDimmer.conf";
 
         public ScreenDimmer()
         {
             InitializeComponent();
             initOverlayWindow();
-            configuration = new Configuration(Handle);
+            
             aboutBox = new AboutBox1();
             helpWindow = new HelpWindow();
+            configuration = new Configuration();
+            
             populateScreenList();
-            syncConfiguration();
             collapse();
+            loadConfiguration();
             hookKeys();
 
             notifyIcon1.Icon = IconMediumBright;
-            this.Icon = IconMediumBright32x32;
-            this.Text = string.Format("Screen Dimmer {0}", Assembly.GetExecutingAssembly().GetName().Version.ToString());
-        }
-
-        private void syncConfiguration()
-        {
-            trackBarBrightness.Value = configuration.CurrentBrightness;
-            numericUpDown1.Value = configuration.EnforcingPeriod;
-            setDimColor(configuration.DimColor);
-            toggleEnforceOnTop(configuration.IsEnforceOnTop);
-            toggleZeroBrighness(configuration.IsZeroBrightness);
-            toggleDebug(configuration.IsDebug);
-            comboBoxScreens.SelectedIndex = 0; // TODO
+            
+            Icon = IconMediumBright32x32;
+            Text = string.Format("Screen Dimmer {0}", Assembly.GetExecutingAssembly().GetName().Version.ToString());
         }
         
+        /// <summary>
+        /// Initializes the overlay window.
+        /// </summary>
         private void initOverlayWindow()
         {
             overlayWindow = new Form();
@@ -97,13 +94,14 @@ namespace Augustine.ScreenDimmer
                 | (int)ExtendedWindowStyles.WS_EX_TRANSPARENT
                 // alt+tab invisible, need to set ShowInTaskbar to false.
                 | (int)ExtendedWindowStyles.WS_EX_TOOLWINDOW);
-            NativeMethods.SetLayeredWindowAttributes(overlayWindow.Handle, 0, 192,
-                (int)LayeredWindowAttributeFlags.LWA_ALPHA);
+            //NativeMethods.SetLayeredWindowAttributes(overlayWindow.Handle, 0, 192,
+            //    (int)LayeredWindowAttributeFlags.LWA_ALPHA);
         }
 
         #region hotkeys
         /// <summary>
-        /// Try to register all the global hotkeys.
+        /// (!) Has to be called after loading configuration.
+        /// Tries to register all the global hotkeys.
         /// </summary>
         private void hookKeys()
         {
@@ -121,8 +119,19 @@ namespace Augustine.ScreenDimmer
             }
         }
 
+        private void populateHotkeys()
+        {
+            helpWindow.ResetHotkeyPanel();
+            helpWindow.AddHotKey(configuration.HotKeyDim);
+            helpWindow.AddHotKey(configuration.HotKeyBright);
+            helpWindow.AddHotKey(configuration.HotKeyIncreaseBrightness);
+            helpWindow.AddHotKey(configuration.HotKeyDecreaseBrightness);
+            helpWindow.AddHotKey(configuration.HotKeyForceOnTop);
+            helpWindow.AddHotKey(configuration.HotKeyHalt);
+        }
+
         /// <summary>
-        /// Try to register a hotkey and handle the exception if happens.
+        /// Tries to register a hotkey and handle the exception if happens.
         /// </summary>
         /// <param name="hotkey"></param>
         /// <param name="sb"></param>
@@ -131,7 +140,7 @@ namespace Augustine.ScreenDimmer
         {
             try
             {
-                hotkey.Register();
+                hotkey.Register(Handle);
                 return true;
             }
             catch (Exception e)
@@ -194,7 +203,7 @@ namespace Augustine.ScreenDimmer
         #endregion
 
         /// <summary>
-        /// Get and uopdate the color from the color picker tool.
+        /// Gets and updates the color from the color picker tool.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -206,6 +215,21 @@ namespace Augustine.ScreenDimmer
                 setDimColor(colorDialog1.Color);
             }
         }
+
+        /// <summary>
+        /// Sets the backcolor of the overlay window and dim button to the desired color.
+        /// </summary>
+        /// <param name="color"></param>
+        private void setDimColor(Color color)
+        {
+            buttonDim.BackColor = color;
+            overlayWindow.BackColor = color;
+        }
+
+        private Color getDimColor() {
+            return overlayWindow.BackColor;
+        }
+
 
         private void labelExpandCollapse_Click(object sender, EventArgs e)
         {
@@ -235,19 +259,10 @@ namespace Augustine.ScreenDimmer
             isExpanded = false;
         }
 
-        /// <summary>
-        /// Set the backcolor of the overlay window and dim button to the desired color.
-        /// </summary>
-        /// <param name="color"></param>
-        private void setDimColor(Color color)
-        {
-            buttonDim.BackColor = color;
-            overlayWindow.BackColor = color;
-        }
 
         private void toggleDebug(bool state)
         {
-
+            // TODO
         }
 
         #region enforcing on top
@@ -406,24 +421,16 @@ namespace Augustine.ScreenDimmer
 
         private void labelBug_Click(object sender, System.EventArgs e)
         {
-            
-        }
-
-        private void populateHotkeys()
-        {
-            helpWindow.ResetHotkeyPanel();
-            helpWindow.AddHotKey(configuration.HotKeyDim);
-            helpWindow.AddHotKey(configuration.HotKeyBright);
-            helpWindow.AddHotKey(configuration.HotKeyIncreaseBrightness);
-            helpWindow.AddHotKey(configuration.HotKeyDecreaseBrightness);
-            helpWindow.AddHotKey(configuration.HotKeyForceOnTop);
-            helpWindow.AddHotKey(configuration.HotKeyHalt);
+            //TODO
         }
 
         private void screenDimmer_FormClosing(object sender, FormClosingEventArgs e)
         {
+            saveConfiguration();
             if (e.CloseReason == CloseReason.WindowsShutDown)
+            {
                 return;
+            }
             if (!isContextClose)
             {
                 this.Hide();
@@ -445,6 +452,7 @@ namespace Augustine.ScreenDimmer
             this.Show();
         }
 
+        #region screen management
         private void setScreen(Form form, int screenIndex)
         {
             if (Screen.AllScreens.Length - 1 < screenIndex)
@@ -494,5 +502,85 @@ namespace Augustine.ScreenDimmer
         {
             populateScreenList();
         }
+        #endregion
+
+        #region configuration management
+        private void saveConfiguration()
+        {
+            uiToConfig();
+            configuration.SaveToFile(confFile);
+        }
+
+        /// <summary>
+        /// (!) Has to be called after initializing all UI components.
+        /// </summary>
+        private void loadConfiguration()
+        {
+            try
+            {
+                configuration = Configuration.LoadFromFile(confFile);
+            }
+            catch (Exception ex)
+            {
+                configuration.LoadDefault();
+            }
+            configToUi();
+        }
+
+        private void uiToConfig()
+        {
+            configuration.CurrentBrightness = (byte) trackBarBrightness.Value;
+            configuration.DimColor = getDimColor();
+            configuration.EnforcingPeriod = (int) numericUpDown1.Value;
+            configuration.IsDebug = checkBoxDebug.Checked;
+            configuration.IsEnforceOnTop = checkBoxEnforceOnTop.Checked;
+            // configuration.IsTransition = checkBoxTransition.Checked; //TODO
+            configuration.IsZeroBrightness = checkBoxZeroBrightness.Checked;
+            configuration.MonitorIndex = (byte) comboBoxScreens.SelectedIndex;
+        }
+
+        private void configToUi()
+        {
+            if (configuration.CurrentBrightness < trackBarBrightness.Minimum)
+            {
+                trackBarBrightness.Value = trackBarBrightness.Minimum;
+            }
+            else if (configuration.CurrentBrightness > trackBarBrightness.Maximum)
+            {
+                trackBarBrightness.Value = trackBarBrightness.Maximum;
+            }
+            else
+            {
+                trackBarBrightness.Value = configuration.CurrentBrightness;
+            }
+            
+            if (configuration.EnforcingPeriod < numericUpDown1.Minimum)
+            {
+                numericUpDown1.Value = numericUpDown1.Minimum;
+            }
+            else if (configuration.CurrentBrightness > trackBarBrightness.Maximum)
+            {
+                numericUpDown1.Value = numericUpDown1.Maximum;
+            }
+            else
+            {
+                numericUpDown1.Value = configuration.EnforcingPeriod;
+            }
+            
+            if (comboBoxScreens.Items.Count > configuration.MonitorIndex)
+            {
+                comboBoxScreens.SelectedIndex = configuration.MonitorIndex;
+            }
+            else
+            {
+                comboBoxScreens.SelectedIndex = 0;
+            }
+
+            setDimColor(configuration.DimColor);
+            toggleEnforceOnTop(configuration.IsEnforceOnTop);
+            toggleZeroBrighness(configuration.IsZeroBrightness);
+            toggleDebug(configuration.IsDebug);
+        }
+        #endregion
     }
 }

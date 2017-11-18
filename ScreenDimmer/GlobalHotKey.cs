@@ -12,39 +12,39 @@ namespace Augustine.ScreenDimmer
     /// <summary>
     /// Base on http://www.dreamincode.net/forums/topic/180436-global-hotkeys/
     /// </summary>
-    [DataContract]
     internal class GlobalHotKey
     {
-        private IntPtr hWnd;
         private KeyModifiers modifiers;
         private Keys key;
         public string Description { get; internal set; }
-        public bool IsRegistered { get; internal set; }
         public int Id { get; internal set; }
+        
+        private IntPtr hWnd;
+        public bool IsRegistered { get; internal set; }
+
+        public GlobalHotKey()
+        {
+        }
 
         /// <summary>
-        /// Create new hotkey and register it (except doNotRegisterNow is true).
+        /// Create new hotkey. A hotkey need to be registered before taking effect.
         /// </summary>
         /// <param name="hWnd"></param>
         /// <param name="modifiers"></param>
         /// <param name="key"></param>
         /// <param name="doNotRegisterNow"></param>
-        public GlobalHotKey(IntPtr hWnd, KeyModifiers modifiers, Keys key, string description, bool doNotRegisterNow = false)
+        public GlobalHotKey(KeyModifiers modifiers, Keys key, string description)
         {
             this.modifiers = modifiers;
             this.key = key;
-            this.hWnd = hWnd;
             this.Description = description;
             Id = GetHashCode();
             IsRegistered = false;
-            if (!doNotRegisterNow)
-            {
-                Register();
-            }
         }
 
         /// <summary>
-        /// Change the assigned hotkey and re-register it.
+        /// Set the key combination and re-register it if it is already registered.
+        /// Unregistered (i.e. !IsRegistered) hotkey need to be registered manually.
         /// </summary>
         /// <param name="modifiers"></param>
         /// <param name="key"></param>
@@ -60,14 +60,15 @@ namespace Augustine.ScreenDimmer
             }
             this.modifiers = modifiers;
             this.key = key;
+            this.Id = GetHashCode();
         }
 
-        public override int GetHashCode()
+        public void SetDescription(string description)
         {
-            return (int) modifiers ^ (int)key ^ hWnd.ToInt32();
+            Description = description;
         }
 
-        public void Register()
+        public void Register(IntPtr hWnd)
         {
             if (IsRegistered)
             {
@@ -79,6 +80,7 @@ namespace Augustine.ScreenDimmer
                     Marshal.GetExceptionForHR(Marshal.GetHRForLastWin32Error()));
             }
             IsRegistered = true;
+            this.hWnd = hWnd; // only update the IntPtr if successfully regitered.
         }
 
         public void Unregister()
@@ -116,6 +118,11 @@ namespace Augustine.ScreenDimmer
             {
                 return false;
             }
+        }
+
+        public override int GetHashCode()
+        {
+            return (int) modifiers ^ (int)key; //^ hWnd.ToInt32();
         }
 
         public override string ToString()

@@ -56,6 +56,7 @@
     </Compile>
     <Compile Include="Configuration.cs" />
     <Compile Include="GlobalHotKey.cs" />
+    <Compile Include="GlobalHotkeyParser.cs" />
     <Compile Include="HelpWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -72,6 +73,7 @@
     <Compile Include="NativeStructures.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serializer.cs" />
     <Compile Include="TextIcon.cs" />
     <EmbeddedResource Include="AboutBox1.resx">
       <DependentUpon>AboutBox1.cs</DependentUpon>
