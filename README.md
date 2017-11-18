@@ -1,6 +1,8 @@
 # ScreenDimmer
 Screen Dimmer Free (Enhanced version for Monash CoC)
+
 Copyleft (ↄ) Augustine's Software 2015 - 2017
+
 Augustine's Software
 
 ## Description
