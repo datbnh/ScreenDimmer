@@ -182,11 +182,11 @@ namespace Augustine.ScreenDimmer
                     }
                     else if (hotkeyId == configuration.HotKeyDim.Id)
                     {
-                        setBrightness(trackBarBrightness.Maximum);
+                        trackBarBrightness.Value = trackBarBrightness.Minimum;
                     }
                     else if (hotkeyId == configuration.HotKeyBright.Id)
                     {
-                        setBrightness(trackBarBrightness.Maximum);
+                        trackBarBrightness.Value = trackBarBrightness.Maximum;
                     }
                     else if (hotkeyId == configuration.HotKeyForceOnTop.Id)
                     {
@@ -586,12 +586,12 @@ namespace Augustine.ScreenDimmer
 
         private void buttonDim_Click(object sender, EventArgs e)
         {
-            setBrightness(trackBarBrightness.Minimum);
+            trackBarBrightness.Value = trackBarBrightness.Minimum;
         }
 
         private void buttonBright_Click(object sender, EventArgs e)
         {
-            setBrightness(trackBarBrightness.Maximum);
+            trackBarBrightness.Value = trackBarBrightness.Maximum;
         }
 
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
