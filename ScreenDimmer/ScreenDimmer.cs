@@ -197,12 +197,13 @@ namespace Augustine.ScreenDimmer
                     if (hotkeyId == lastHotkeyId)
                     {
                         hotkeyRepeatCount++;
-                    } else
+                    } 
+                    else
                     {
                         hotkeyRepeatCount = 0;
                         lastHotkeyId = hotkeyId;
                     }
-                    // Console.WriteLine(HotKeyId);
+                    //Console.WriteLine("Last {0} | Current {1} | Repeat {2}", lastHotkeyId, hotkeyId, hotkeyRepeatCount);
                     // Id can change, then cannot use switch case.
                     if (hotkeyId == configuration.HotKeyIncreaseBrightness.Id)
                     {
@@ -312,7 +313,7 @@ namespace Augustine.ScreenDimmer
                 return;
             }
             
-            int modifiedSpeed = speed / 3;
+            int modifiedSpeed = speed / 3 + 1;
             if (trackBarBrightness.Value+modifiedSpeed >= trackBarBrightness.Maximum)
             {
                 trackBarBrightness.Value = trackBarBrightness.Maximum;
