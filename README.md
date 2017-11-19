@@ -29,6 +29,7 @@ Source code (GPL): https://github.com/datbnh/ScreenDimmer/
 ## Change log
 ### Version 3.3
 + [Fixed issue] UI fixed to work with high DPI setting
++ [Fixed bug] User has to press "Increase Brightness" hotkey four times for the first increasement
 
 ### Version 3.2
 + Smooth transition supported
