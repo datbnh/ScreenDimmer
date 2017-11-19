@@ -34,6 +34,10 @@ namespace Augustine.ScreenDimmer
         /// The help window ("show hotkeys" window).
         /// </summary>
         private HelpWindow helpWindow;
+        /// <summary>
+        /// The brightness OSD.
+        /// </summary>
+        private OsdWindow osdWindow;
 
         /// <summary>
         /// Contains all the settings.
@@ -91,6 +95,7 @@ namespace Augustine.ScreenDimmer
             aboutBox = new AboutBox1();
             helpWindow = new HelpWindow();
             configuration = new Configuration();
+            osdWindow = new OsdWindow();
 
             // has to be in this order!
             populateScreenList();
@@ -298,7 +303,7 @@ namespace Augustine.ScreenDimmer
         /// <param name="brightness"></param>
         private void setBrightness(int brightness)
         {
-            toolTipHint.SetToolTip(trackBarBrightness, string.Format("{0} %", brightness));
+            toolTipHint.SetToolTip(trackBarBrightness, string.Format("{0}%", brightness));
             NativeMethods.SetLayeredWindowAttributes(overlayWindow.Handle, 0, (byte)(255 - (brightness / 100f) * 255),
                 (int)LayeredWindowAttributeFlags.LWA_ALPHA);
         }
@@ -431,6 +436,10 @@ namespace Augustine.ScreenDimmer
         private void trackBarBrightness_ValueChanged(object sender, EventArgs e)
         {
             setBrightness(((TrackBar)sender).Value);
+            if (!Visible)
+            {
+                osdWindow.Display(((TrackBar)sender).Value.ToString() + "%", new Font("Segeo UI", 32), Color.Black, Color.White, 20, 20, 255, 100, 1000, 1000);
+            }
         }
         #endregion
    
