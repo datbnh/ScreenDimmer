@@ -33,15 +33,15 @@ Windows operating system is required. *Only tested on Windows 8.1 32-bit and 64-
 
 ## Screenshots
 ### Main UI
-![Main UI basic](/../master/Screenshots/Main%20UI.png?raw=true "Screen Dimmer main UI")
-![Main UI advanced](/../master/Screenshots/Main%20UI%202.png?raw=true "Screen Dimmer main UI")
+![Main UI basic](https://raw.githubusercontent.com/datbnh/ScreenDimmer/master/Screenshots/Main%20UI%202.png "Screen Dimmer main UI")
+![Main UI advanced](https://raw.githubusercontent.com/datbnh/ScreenDimmer/master/Screenshots/Main%20UI%202.png?raw=true "Screen Dimmer main UI")
 ### Hotkeys
-![Hotkeys](/../master/Screenshots/Hotkeys.png?raw=true "Screen Dimmer hotkeys")
+![Hotkeys](https://raw.githubusercontent.com/datbnh/ScreenDimmer/master/Screenshots/Hotkeys.png?raw=true "Screen Dimmer hotkeys")
 ### Application in action
-![Full Brightness](/../master/Screenshots/FullBrightness.png?raw=true "Full brightness")
-![Dimmed](/../master/Screenshots/OSD.png?raw=true "Dimmed")
+![Full Brightness](https://raw.githubusercontent.com/datbnh/ScreenDimmer/master/Screenshots/FullBrightness.png?raw=true "Full brightness")
+![Dimmed](https://raw.githubusercontent.com/datbnh/ScreenDimmer/master/Screenshots/OSD.png?raw=true "Dimmed")
 ### Blue-light filter
-![Blue Light Filter](/../master/Screenshots/BlueLight%20Filter.png?raw=true "Blue-light filter in action")
+![Blue Light Filter](https://raw.githubusercontent.com/datbnh/ScreenDimmer/master/Screenshots/BlueLight%20Filter.png?raw=true "Blue-light filter in action")
 
 ## Change Log
 ### Version 3.3
