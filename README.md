@@ -5,7 +5,9 @@ Copyleft (ↄ) Augustine's Software 2015 - 2017
 
 Augustine's Software
 
-### Download latest version
+datbnh[at]gmail.com
+
+### Download latest version:
 https://github.com/datbnh/ScreenDimmer/releases/latest
 
 ## Description
@@ -20,13 +22,28 @@ Home page and documentation: https://github.com/datbnh/ScreenDimmer/
 Source code (GPL): https://github.com/datbnh/ScreenDimmer/
 
 ## Main Features
-* Adjustable brightness
-* Changable filter color
-* Hotkey supported
+* Adjust the screen brightness
+* Change the overlay color (e.g. blue light filter)
+* Hotkeys supported
 * Secondary monitor supported
-* Automatically store current settings and restore on the next launch
+* Automatically store the current settings and restore them on the next launch of the application
 
-## Change log
+## System Requirements
+Windows operating system is required. *Only tested on Windows 8.1 32-bit and 64-bit, 96-DPI and 125-DPI monitors.*
+
+## Screenshots
+### Main UI
+![Main UI basic](/../master/Screenshots/Main%20UI.png?raw=true "Screen Dimmer main UI")
+![Main UI advanced](/../master/Screenshots/Main%20UI%202.png?raw=true "Screen Dimmer main UI")
+### Hotkeys
+![Hotkeys](/../master/Screenshots/Hotkeys.png?raw=true "Screen Dimmer hotkeys")
+### Application in action
+![Full Brightness](/../master/Screenshots/FullBrightness.png?raw=true "Full brightness")
+![Dimmed](/../master/Screenshots/OSD.png?raw=true "Dimmed")
+### Blue-light filter
+![Blue Light Filter](/../master/Screenshots/BlueLight%20Filter.png?raw=true "Blue-light filter in action")
+
+## Change Log
 ### Version 3.3
 + On Screen Display (OSD) for brightness level (when main UI is closed to system tray)
 + [Fixed issue] UI fixed to work with high DPI setting
