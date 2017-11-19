@@ -28,6 +28,7 @@ Source code (GPL): https://github.com/datbnh/ScreenDimmer/
 
 ## Change log
 ### Version 3.3
++ On Screen Display (OSD) for brightness level (when main UI is closed to system tray)
 + [Fixed issue] UI fixed to work with high DPI setting
 + [Fixed bug] User has to press "Increase Brightness" hotkey four times for the first increasement
 
