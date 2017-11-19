@@ -33,7 +33,7 @@ Windows operating system is required. *Only tested on Windows 8.1 32-bit and 64-
 
 ## Screenshots
 ### Main UI
-![Main UI basic](https://raw.githubusercontent.com/datbnh/ScreenDimmer/master/Screenshots/Main%20UI%202.png "Screen Dimmer main UI")
+![Main UI basic](https://raw.githubusercontent.com/datbnh/ScreenDimmer/master/Screenshots/Main%20UI.png "Screen Dimmer main UI")
 ![Main UI advanced](https://raw.githubusercontent.com/datbnh/ScreenDimmer/master/Screenshots/Main%20UI%202.png?raw=true "Screen Dimmer main UI")
 ### Hotkeys
 ![Hotkeys](https://raw.githubusercontent.com/datbnh/ScreenDimmer/master/Screenshots/Hotkeys.png?raw=true "Screen Dimmer hotkeys")
