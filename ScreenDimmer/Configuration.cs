@@ -71,6 +71,14 @@ namespace Augustine.ScreenDimmer
             set { HotKeyHalt = GlobalHotkeyParser.Parse(value); } }
         internal GlobalHotKey HotKeyHalt;
 
+        [DataMember(Name = "HotkeyResize")]
+        private string hotKeyResize
+        {
+            get { return HotKeyResize.ToString(); }
+            set { HotKeyResize = GlobalHotkeyParser.Parse(value); }
+        }
+        internal GlobalHotKey HotKeyResize;
+
         internal Configuration()
         {
             HotKeyDim = new GlobalHotKey();
@@ -79,6 +87,7 @@ namespace Augustine.ScreenDimmer
             HotKeyDecreaseBrightness = new GlobalHotKey();
             HotKeyForceOnTop = new GlobalHotKey();
             HotKeyHalt = new GlobalHotKey();
+            HotKeyResize = new GlobalHotKey();
         }
 
         private void setHotkeyDescriptions()
@@ -89,6 +98,7 @@ namespace Augustine.ScreenDimmer
             HotKeyDecreaseBrightness.SetDescription("Decrease Brightness");
             HotKeyForceOnTop.SetDescription("Force on Top");
             HotKeyHalt.SetDescription("Immediately Halt Program");
+            HotKeyResize.SetDescription("Adjust Window Size");
         }
 
         internal void LoadDefault()
@@ -107,6 +117,7 @@ namespace Augustine.ScreenDimmer
             HotKeyIncreaseBrightness.SetKey(KeyModifiers.MOD_WIN | KeyModifiers.MOD_CONTROL, System.Windows.Forms.Keys.Up);
             HotKeyForceOnTop.SetKey(KeyModifiers.MOD_WIN | KeyModifiers.MOD_CONTROL, System.Windows.Forms.Keys.T);
             HotKeyHalt.SetKey(KeyModifiers.MOD_WIN | KeyModifiers.MOD_CONTROL, System.Windows.Forms.Keys.H);
+            HotKeyResize.SetKey(KeyModifiers.MOD_WIN | KeyModifiers.MOD_CONTROL, System.Windows.Forms.Keys.B);
             setHotkeyDescriptions();
         }
 
