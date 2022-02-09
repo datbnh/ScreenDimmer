@@ -87,6 +87,39 @@ namespace Augustine.ScreenDimmer
         public static readonly Icon IconMediumBright32x32 = TextIcon.CreateTextIcon("\uE286", Color.White, "", 32);
         #endregion
 
+        public partial class Form1 : Form
+        {
+            public Form1()
+            {
+                //InitializeComponent();
+            }
+
+            const int WM_NCHITTEST = 0x0084;
+            const int HTCLIENT = 1;
+            const int HTCAPTION = 2;
+            protected override void WndProc(ref Message m)
+            {
+                base.WndProc(ref m);
+                switch (m.Msg)
+                {
+                    case WM_NCHITTEST:
+                        if (m.Result == (IntPtr)HTCLIENT)
+                        {
+                            var p = this.PointToClient(new Point(m.LParam.ToInt32()));
+
+                            m.Result =
+                                (IntPtr)
+                                (p.X <= 6
+                                     ? p.Y <= 6 ? 13 : p.Y >= this.Height - 7 ? 16 : 10
+                                     : p.X >= this.Width - 7
+                                           ? p.Y <= 6 ? 14 : p.Y >= this.Height - 7 ? 17 : 11
+                                           : p.Y <= 6 ? 12 : p.Y >= this.Height - 7 ? 15 : p.Y <= 24 ? 2 : 1);
+                        }
+                        break;
+                }
+            }
+        }
+
         public ScreenDimmer()
         {
             InitializeComponent();
@@ -112,7 +145,7 @@ namespace Augustine.ScreenDimmer
         /// </summary>
         private void initOverlayWindow()
         {
-            overlayWindow = new Form();
+            overlayWindow = new Form1();
             overlayWindow.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             overlayWindow.ShowInTaskbar = false;
             overlayWindow.Show();
@@ -148,6 +181,7 @@ namespace Augustine.ScreenDimmer
             success &= tryHookKeyAppendError(configuration.HotKeyDim, ref sb);
             success &= tryHookKeyAppendError(configuration.HotKeyForceOnTop, ref sb);
             success &= tryHookKeyAppendError(configuration.HotKeyHalt, ref sb);
+            success &= tryHookKeyAppendError(configuration.HotKeyResize, ref sb);
             if (!success)
             {
                 notifyIcon1.ShowBalloonTip(0, "Cannot register one or more hotkeys.", sb.ToString(), ToolTipIcon.Warning);
@@ -166,6 +200,7 @@ namespace Augustine.ScreenDimmer
             helpWindow.AddHotKey(configuration.HotKeyDecreaseBrightness);
             helpWindow.AddHotKey(configuration.HotKeyForceOnTop);
             helpWindow.AddHotKey(configuration.HotKeyHalt);
+            helpWindow.AddHotKey(configuration.HotKeyResize);
         }
 
         /// <summary>
@@ -234,6 +269,12 @@ namespace Augustine.ScreenDimmer
                     {
                         isContextClose = true;
                         Close();
+                    }
+                    else if (hotkeyId == configuration.HotKeyResize.Id)
+                    {
+                        NativeMethods.SetWindowLong(overlayWindow.Handle, NativeMethods.GWL_EXSTYLE,
+                            NativeMethods.GetWindowLong(overlayWindow.Handle, NativeMethods.GWL_EXSTYLE)
+                                ^ (int)ExtendedWindowStyles.WS_EX_TRANSPARENT);
                     }
                     break;
             }
