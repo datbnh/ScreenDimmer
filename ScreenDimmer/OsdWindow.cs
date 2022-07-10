@@ -20,16 +20,18 @@ namespace Augustine.ScreenDimmer
         private byte targetOpacity; // 0 - 255
         private DateTime effectStartTime;
         private bool isDisplaying = false;
+        private Screen relatedScreen;
 
-        public OsdWindow()
+        public OsdWindow(Screen screen)
         {
+            relatedScreen = screen;
             InitializeComponent();
             initialize();
     //        Display("Hello World", new Font("Segeo UI", 32), Color.Black, Color.White,
     //20, 20, 255, 1000, 1000, 2000);
         }
 
-        public void Display(string text, Font font, Color backcolor, Color textcolor, int X, int Y, byte opacity,
+        public void Display(string text, Font font, Color backcolor, Color textcolor, byte opacity,
             int fadeInInterval, int delayTime, int fadeOutInterval)
         {
             label1.Text = text;
@@ -38,7 +40,7 @@ namespace Augustine.ScreenDimmer
                 Font = font;
                 BackColor = backcolor;
                 ForeColor = textcolor;
-                Location = new Point(X, Y);
+                Location = new Point(relatedScreen.Bounds.X+20, relatedScreen.Bounds.Y + 20);
                 targetOpacity = opacity;
 
                 isDisplaying = true;

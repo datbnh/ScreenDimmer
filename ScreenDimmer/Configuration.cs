@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Augustine.ScreenDimmer
 {
@@ -19,8 +20,6 @@ namespace Augustine.ScreenDimmer
         internal bool IsDebug;
         [DataMember(Name = "AllowTransition")]
         internal bool IsTransition;
-        [DataMember(Name = "MonitorIndex")]
-        internal byte MonitorIndex;
         /// <summary>
         /// Range: 0-100
         /// </summary>
@@ -71,6 +70,9 @@ namespace Augustine.ScreenDimmer
             set { HotKeyHalt = GlobalHotkeyParser.Parse(value); } }
         internal GlobalHotKey HotKeyHalt;
 
+        [DataMember(Name = "EnabledScreens")]
+        internal List<string> EnabledScreens;
+
         internal Configuration()
         {
             HotKeyDim = new GlobalHotKey();
@@ -93,8 +95,8 @@ namespace Augustine.ScreenDimmer
 
         internal void LoadDefault()
         {
-            MonitorIndex = 0;
             CurrentBrightness = 70;
+            EnabledScreens = Screen.AllScreens.Select(o => o.DeviceName).ToList();
             IsZeroBrightness = true;
             IsEnforceOnTop = false;
             IsDebug = false;
