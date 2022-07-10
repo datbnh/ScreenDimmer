@@ -25,7 +25,8 @@ namespace Augustine.ScreenDimmer
         /// <summary>
         /// The overlay window.
         /// </summary>
-        private Form overlayWindow;
+        //private Form overlayWindow;
+        private Dictionary<string, Form> overlayWindows;
         /// <summary>
         /// The about box.
         /// </summary>
@@ -37,7 +38,8 @@ namespace Augustine.ScreenDimmer
         /// <summary>
         /// The brightness OSD.
         /// </summary>
-        private OsdWindow osdWindow;
+        //private OsdWindow osdWindow;
+        private Dictionary<string,OsdWindow> osdWindows;
 
         /// <summary>
         /// Contains all the settings.
@@ -95,16 +97,43 @@ namespace Augustine.ScreenDimmer
             aboutBox = new AboutBox1();
             helpWindow = new HelpWindow();
             configuration = new Configuration();
-            osdWindow = new OsdWindow();
+            osdWindows = Screen.AllScreens.ToDictionary(k=>k.DeviceName, v=>new OsdWindow(v));
 
             // has to be in this order!
-            populateScreenList();
+            initScreenOptions();
             loadConfiguration();
             hookKeys();
 
             notifyIcon1.Icon = IconMediumBright;
             Icon = IconMediumBright32x32;
             Text = string.Format("Screen Dimmer {0}", Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            setBrightness(trackBarBrightness.Value);
+        }
+
+        /// <summary>
+        /// Creates checkboxes for each screen, allows users to only dim certain screens.
+        /// </summary>
+        private void initScreenOptions()
+        {
+            foreach (var screen in Screen.AllScreens)
+            {
+                var checkbox = new CheckBox()
+                {
+                    Text = screen.DeviceName,
+                    Tag = screen
+                };
+                checkbox.CheckedChanged += (object sender, EventArgs e) =>
+                {
+                    var cb = sender as CheckBox;
+                    var scr = cb.Tag as Screen;
+                    //osdWindows[scr.DeviceName].Visible
+                    var screens = getEnabledScreenList();
+                    //cb.Visible = screens.Contains(scr.DeviceName);
+                    overlayWindows[scr.DeviceName].Visible = screens.Contains(scr.DeviceName);
+                    setBrightness(trackBarBrightness.Value);
+                };
+                tableLayoutPanel2.Controls.Add(checkbox);
+            }
         }
         
         /// <summary>
@@ -112,25 +141,48 @@ namespace Augustine.ScreenDimmer
         /// </summary>
         private void initOverlayWindow()
         {
-            overlayWindow = new Form();
-            overlayWindow.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            overlayWindow.ShowInTaskbar = false;
-            overlayWindow.Show();
-            overlayWindow.WindowState = FormWindowState.Maximized;
-            enforceOnTop();
-            NativeMethods.SetWindowLong(overlayWindow.Handle, NativeMethods.GWL_EXSTYLE,
-                // get current GWL_EXSTYLE
-                NativeMethods.GetWindowLong(overlayWindow.Handle, NativeMethods.GWL_EXSTYLE)
-                // click-through. Need to be combined with see-through.
-                // Need to recalled if opacity changed by setting Form.Cpacity.
-                // Using SetLayeredWindowAttributes will not require to recall this.
-                | (int)ExtendedWindowStyles.WS_EX_LAYERED
-                // see-through
-                | (int)ExtendedWindowStyles.WS_EX_TRANSPARENT
-                // alt+tab invisible, need to set ShowInTaskbar to false.
-                | (int)ExtendedWindowStyles.WS_EX_TOOLWINDOW);
-            //NativeMethods.SetLayeredWindowAttributes(overlayWindow.Handle, 0, 192,
-            //    (int)LayeredWindowAttributeFlags.LWA_ALPHA);
+            overlayWindows = Screen.AllScreens.ToDictionary(k => k.DeviceName, 
+                (v) => {
+
+                    return new Form()
+                    {
+                        FormBorderStyle = System.Windows.Forms.FormBorderStyle.None,
+                        ShowInTaskbar = false,
+                        Visible = false,
+                        Tag = v
+                    };
+                }
+            );
+
+            foreach (var window in overlayWindows)
+            {
+                window.Value.Load += (object sender, EventArgs e) => {
+                    var overlay = (sender as Form);
+                    var screen = overlay.Tag as Screen;
+                    overlay.Top = screen.Bounds.Top;
+                    overlay.Left = screen.Bounds.Left;
+                    overlay.Width = screen.Bounds.Width;
+                    overlay.Height = screen.Bounds.Height;
+                    overlay.WindowState = FormWindowState.Maximized;
+                    overlay.TopMost = true;
+                };
+                window.Value.Show();
+                NativeMethods.SetWindowLong(window.Value.Handle, NativeMethods.GWL_EXSTYLE,
+                    // get current GWL_EXSTYLE
+                    NativeMethods.GetWindowLong(window.Value.Handle, NativeMethods.GWL_EXSTYLE)
+                    // click-through. Need to be combined with see-through.
+                    // Need to recalled if opacity changed by setting Form.Cpacity.
+                    // Using SetLayeredWindowAttributes will not require to recall this.
+                    | (int)ExtendedWindowStyles.WS_EX_LAYERED
+                    // see-through
+                    | (int)ExtendedWindowStyles.WS_EX_TRANSPARENT
+                    // alt+tab invisible, need to set ShowInTaskbar to false.
+                    | (int)ExtendedWindowStyles.WS_EX_TOOLWINDOW);
+                //NativeMethods.SetLayeredWindowAttributes(overlayWindow.Handle, 0, 192,
+                //    (int)LayeredWindowAttributeFlags.LWA_ALPHA);
+            }
+
+            TopMost = true;
         }
 
         #region hotkey management
@@ -249,7 +301,8 @@ namespace Augustine.ScreenDimmer
         /// <param name="e"></param>
         private void colorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            colorDialog1.Color = overlayWindow.BackColor;
+            foreach (var window in overlayWindows)
+                colorDialog1.Color = window.Value.BackColor;
             if (colorDialog1.ShowDialog() == DialogResult.OK)
             {
                 setDimColor(colorDialog1.Color);
@@ -262,16 +315,20 @@ namespace Augustine.ScreenDimmer
         /// <param name="color"></param>
         private void setDimColor(Color color)
         {
-            buttonDim.BackColor = color;
-            overlayWindow.BackColor = color;
+            buttonDim.BackColor = color; 
+            foreach (var window in overlayWindows)
+                window.Value.BackColor = color;
         }
 
         /// <summary>
         /// Gets the current color of the overlay window.
         /// </summary>
         /// <returns></returns>
-        private Color getDimColor() {
-            return overlayWindow.BackColor;
+        private Color getDimColor() 
+        {
+            foreach (var window in overlayWindows) //return first for now
+                return window.Value.BackColor;
+            return Color.White;
         }
         #endregion
 
@@ -304,8 +361,22 @@ namespace Augustine.ScreenDimmer
         private void setBrightness(int brightness)
         {
             toolTipHint.SetToolTip(trackBarBrightness, string.Format("{0}%", brightness));
-            NativeMethods.SetLayeredWindowAttributes(overlayWindow.Handle, 0, (byte)(255 - (brightness / 100f) * 255),
-                (int)LayeredWindowAttributeFlags.LWA_ALPHA);
+
+            var enabledScreenList = getEnabledScreenList();
+            foreach (var window in overlayWindows)
+            {
+                var scr = window.Value.Tag as Screen;
+                if (enabledScreenList.Contains(scr.DeviceName))
+                {
+                    NativeMethods.SetLayeredWindowAttributes(window.Value.Handle, 0, (byte)(255 - (brightness / 100f) * 255),
+                        (int)LayeredWindowAttributeFlags.LWA_ALPHA);
+                    window.Value.Name = "tng";
+                }
+                else
+                {
+                    window.Value.Visible = false;
+                }
+            }
         }
 
         /// <summary>
@@ -436,9 +507,14 @@ namespace Augustine.ScreenDimmer
         private void trackBarBrightness_ValueChanged(object sender, EventArgs e)
         {
             setBrightness(((TrackBar)sender).Value);
-            if (!Visible)
+            var enabledScreenList = getEnabledScreenList();
+
+            foreach (var osdWindow in osdWindows)
             {
-                osdWindow.Display(((TrackBar)sender).Value.ToString() + "%", new Font("Segeo UI", 32), Color.Black, Color.White, 20, 20, 255, 100, 1000, 1000);
+                if (enabledScreenList.Contains(osdWindow.Key))
+                {
+                    osdWindow.Value.Display($"({osdWindow.Key}) {((TrackBar)sender).Value}%", new Font("Segeo UI", 32), Color.Black, Color.White, 255, 100, 1000, 1000);
+                }
             }
         }
         #endregion
@@ -450,57 +526,15 @@ namespace Augustine.ScreenDimmer
         /// </summary>
         /// <param name="form"></param>
         /// <param name="screenIndex"></param>
-        private void setScreen(Form form, int screenIndex)
+        private void setScreen(Form form, Screen screen)
         {
-            if (Screen.AllScreens.Length - 1 < screenIndex)
-            {
-                return; // invalid index
-            }
             FormWindowState currentState = form.WindowState;
             if (currentState != FormWindowState.Normal)
             {
                 form.WindowState = FormWindowState.Normal;
             }
-            form.Location = Screen.AllScreens[screenIndex].WorkingArea.Location;
+            form.Location = screen.WorkingArea.Location;
             form.WindowState = currentState;
-        }
-
-        /// <summary>
-        /// Pupulates the sceen list into the combo box.
-        /// </summary>
-        private void populateScreenList()
-        {
-            Screen[] screens = Screen.AllScreens;
-            if (numberOfScreens != screens.Length)
-            {
-                numberOfScreens = screens.Length;
-                List<string> screensNames = new List<string>();
-                foreach (Screen item in screens)
-                {
-                    screensNames.Add(item.DeviceName);
-                }
-                int currentSelected = comboBoxScreens.SelectedIndex;
-                comboBoxScreens.Items.Clear();
-                comboBoxScreens.Items.AddRange(screensNames.ToArray());
-                if (currentSelected < numberOfScreens)
-                {
-                    comboBoxScreens.SelectedIndex = currentSelected;
-                } 
-                else
-                {
-                    comboBoxScreens.SelectedIndex = 0;
-                }
-            }
-        }
-
-        private void comboBoxScreens_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            setScreen(overlayWindow, ((ComboBox)sender).SelectedIndex);
-        }
-
-        private void comboBoxScreens_DropDown(object sender, EventArgs e)
-        {
-            populateScreenList();
         }
         #endregion
 
@@ -536,7 +570,7 @@ namespace Augustine.ScreenDimmer
             configuration.IsEnforceOnTop = checkBoxEnforceOnTop.Checked;
             configuration.IsTransition = checkBoxAllowTransition.Checked;
             configuration.IsZeroBrightness = checkBoxZeroBrightness.Checked;
-            configuration.MonitorIndex = (byte) comboBoxScreens.SelectedIndex;
+            configuration.EnabledScreens = getEnabledScreenList();
         }
 
         private void configToUi()
@@ -566,22 +600,44 @@ namespace Augustine.ScreenDimmer
             {
                 numericUpDown1.Value = configuration.EnforcingPeriod;
             }
-            
-            if (comboBoxScreens.Items.Count > configuration.MonitorIndex)
-            {
-                comboBoxScreens.SelectedIndex = configuration.MonitorIndex;
-            }
-            else
-            {
-                comboBoxScreens.SelectedIndex = 0;
-            }
 
             setDimColor(configuration.DimColor);
             checkBoxEnforceOnTop.Checked = configuration.IsEnforceOnTop;
             checkBoxZeroBrightness.Checked = configuration.IsZeroBrightness;
             checkBoxDebug.Checked = configuration.IsDebug;
             checkBoxAllowTransition.Checked = configuration.IsTransition;
+
+
+            var EnabledScreens = new List<string>();
+            foreach (var control in tableLayoutPanel2.Controls)
+            {
+                var cb = control as CheckBox;
+                if (cb != null && cb.Enabled)
+                {
+                    var scr = cb.Tag as Screen;
+                    if (configuration.EnabledScreens?.Contains(scr.DeviceName)==true)
+                    {
+                        cb.Checked = true;
+                    }
+                }
+            }
         }
+
+        private List<string> getEnabledScreenList()
+        {
+            var EnabledScreens = new List<string>();
+            foreach (var control in tableLayoutPanel2.Controls)
+            {
+                var cb = control as CheckBox;
+                if (cb != null && cb.Checked)
+                {
+                    var scr = cb.Tag as Screen;
+                    EnabledScreens.Add(scr.DeviceName);
+                }
+            }
+            return EnabledScreens;
+        }
+
         #endregion
 
         #region other UI callbacks
@@ -615,7 +671,7 @@ namespace Augustine.ScreenDimmer
         /// </summary>
         private void enforceOnTop()
         {
-            overlayWindow.TopMost = true; // overlay window is set to top most
+            //overlayWindow.TopMost = true; // overlay window is set to top most
             TopMost = true; // main form has to be on top of overlay window
         }
 
@@ -698,5 +754,17 @@ namespace Augustine.ScreenDimmer
             Close();
         }
         #endregion
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            foreach (var window in overlayWindows)
+            {
+                var screen = window.Value.Tag as Screen;
+                window.Value.Top = screen.Bounds.Top;
+                window.Value.Left = screen.Bounds.Left;
+                window.Value.Width = screen.Bounds.Width;
+                window.Value.Height = screen.Bounds.Height;
+            }
+        }
     }
 }
